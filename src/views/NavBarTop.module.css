@@ -1,0 +1,27 @@
+/* NavBarTop.module.css */
+.top {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    background: yellow;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: row;
+    gap: 0.25rem;
+}
+
+.inputGroup input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.initButton {
+    width: 100%;
+    box-sizing: border-box;
+    align-self: start;
+    /* optional: aligns button to left */
+}

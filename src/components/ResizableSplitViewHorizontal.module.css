@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.sidebar {
+    height: 100%;
+    background-color: #f5f5dc;
+    /* light yellow */
+    overflow: auto;
+}
+
+.divider {
+    width: 5px;
+    cursor: col-resize;
+    background-color: #1b0404;
+}
+
+.main {
+    flex: 1;
+    height: 100%;
+    background-color: #2568e3;
+    /* light green */
+    overflow: auto;
+}

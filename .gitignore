@@ -1,0 +1,43 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+*.pid
+*.seed
+*.log
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDE/editor artifacts
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Parcel, Vite, or other bundlers (optional)
+.cache/
+*.parcel-cache/
+
+# Coverage reports
+coverage/
+
+# Misc
+*.tgz
+
+for-ai.md

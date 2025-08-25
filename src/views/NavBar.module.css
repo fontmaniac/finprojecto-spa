@@ -1,0 +1,6 @@
+/* NavBar.module.css */
+.navBar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
