@@ -25,4 +25,5 @@
     background-color: #2568e3;
     /* light green */
     overflow: auto;
+    border: 5px solid red;
 }
