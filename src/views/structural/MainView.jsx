@@ -1,7 +1,7 @@
 /* FM: Obviously, the Main View of the application. Supposed to host a representation generated from parameters specified in NavBar. */
 /* FM: For now here is a simple parabola y = ax^2 + bx + c */
 
-import layout from '../components/Layout.module.css';
+import layout from '../primitives/Layout.module.css';
 import styles from './MainView.module.css';
 import React, { useState, useEffect } from 'react';
 

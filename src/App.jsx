@@ -1,10 +1,10 @@
 /* FM: React Application "root" */
 
 import { useState } from 'react';
-import { NavBar } from './views/NavBar';
-import { MainView } from './views/MainView';
-import { ResizableSplitViewHorizontal } from './components/ResizableSplitViewHorizontal';
-import { Layout } from './components/Layout';
+import { NavBar } from './views/structural/NavBar';
+import { MainView } from './views/structural/MainView';
+import { ResizableSplitViewHorizontal } from './views/primitives/ResizableSplitViewHorizontal';
+import { Layout } from './views/primitives/Layout';
 
 function App() {
   const [params, setParams] = useState({ a: 1, b: 0, c: 0 });

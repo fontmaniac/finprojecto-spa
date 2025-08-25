@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { NavBarTop } from './NavBarTop';
 import { NavBarBottom } from './NavBarBottom';
-import layout from '../components/Layout.module.css';
+import layout from '../primitives/Layout.module.css';
 import styles from './NavBar.module.css';
 
 export function NavBar({ onInit }) {
