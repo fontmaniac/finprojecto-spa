@@ -14,6 +14,21 @@ src/
 ├── views/               # Domain-specific renderables
 │   ├── NavBar.jsx       # Input and property editing interface
 │   └── MainView.jsx     # Chart display and interaction zone
+├── assets/              # Static assets (currently empty)
+├── App.jsx              # React application "root"
+├── App.css              # Global styles for App
+├── index.css            # Global base styles
+├── main.jsx             # Vite entry point
+root/
+├── eslint.config.js     # ESLint configuration
+├── for-ai.md            # Context scaffold for LLM assistants
+├── index.html           # HTML entry point for Vite
+├── package.json         # Project manifest and scripts
+├── package-lock.json    # Dependency lockfile
+├── README.md            # Project overview and development philosophy
+├── scrape-fm.ps1        # Script to extract FM/NB comments for LLM context
+├── vite.config.js       # Vite bundler configuration
+
 ```
 
 ## 🧠 Architectural Notes
@@ -30,6 +45,11 @@ To clean Vite cache and reinstall dependencies:
 
 ```powershell
 powershell -NoProfile -Command "Remove-Item node_modules,.vite,dist -Recurse -Force -ErrorAction SilentlyContinue; npm install"
+
+To generate a "context scaffolding" for AI/LLM before starting a vibe-coding session.
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File ./scrape-fm.ps1
 
 ### 🧠🚧 Development Philosophy (for LLM assistants)
 
