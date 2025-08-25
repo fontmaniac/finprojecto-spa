@@ -21,9 +21,9 @@ function App() {
       <Layout.Sidebar width="100%">
         <NavBar onInit={handleInit} />
       </Layout.Sidebar>
-      <Layout.Main>
+      <Layout.MainArea>
         <MainView a={params.a} b={params.b} c={params.c} trigger={refreshKey} />
-      </Layout.Main>
+      </Layout.MainArea>
     </ResizableSplitViewHorizontal>
   );
 }

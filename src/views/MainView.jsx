@@ -63,7 +63,7 @@ export function MainView({ a, b, c, trigger }) {
         ];
 
         setSvgContent(
-            <svg preserveAspectRatio="none" width="100%" height="100%" viewBox={`0 0 ${width} ${height}`} overflow="hidden">
+            <svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`} overflow="hidden">
                 <polyline points={svgPoints} fill="none" stroke="blue" strokeWidth="2" />
                 {axisX}
                 {axisY}

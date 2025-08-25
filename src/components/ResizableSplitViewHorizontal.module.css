@@ -1,8 +1,8 @@
 .container {
     display: flex;
     flex-direction: row;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
 }
 
@@ -19,11 +19,10 @@
     background-color: #1b0404;
 }
 
-.main {
+.mainarea {
     flex: 1;
     height: 100%;
     background-color: #2568e3;
     /* light green */
     overflow: auto;
-    border: 5px solid red;
 }

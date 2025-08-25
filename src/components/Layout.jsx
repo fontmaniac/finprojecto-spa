@@ -17,13 +17,13 @@ function Sidebar({ children, width = '450px' }) {
     );
 }
 
-function Main({ children }) {
+function MainArea({ children }) {
     return (
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, height: '100%' }}>
             {children}
         </div>
     );
 }
 
 Layout.Sidebar = Sidebar;
-Layout.Main = Main;
+Layout.MainArea = MainArea;

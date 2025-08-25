@@ -31,7 +31,7 @@ export function ResizableSplitViewHorizontal({ children }) {
         };
     }, []);
 
-    const [sidebar, main] = React.Children.toArray(children);
+    const [sidebar, mainarea] = React.Children.toArray(children);
 
     return (
         <div className={styles.container}>
@@ -39,8 +39,8 @@ export function ResizableSplitViewHorizontal({ children }) {
                 {sidebar}
             </div>
             <div className={styles.divider} onMouseDown={handleMouseDown} />
-            <div className={styles.main}>
-                {main}
+            <div className={styles.mainarea}>
+                {mainarea}
             </div>
         </div>
     );
