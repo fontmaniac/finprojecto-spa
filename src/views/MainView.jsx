@@ -1,3 +1,5 @@
+/* FM: Obviously, the Main View of the application. Supposed to host a representation generated from parameters specified in NavBar. */
+
 import layout from '../components/Layout.module.css';
 import styles from './MainView.module.css';
 

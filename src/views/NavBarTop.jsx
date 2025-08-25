@@ -1,3 +1,5 @@
+/* FM: This is where the initial parameters for MainView are being entered. */
+
 import styles from './NavBarTop.module.css';
 
 export function NavBarTop({ a, b, c, setA, setB, setC, onInit }) {

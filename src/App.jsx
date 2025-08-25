@@ -1,3 +1,5 @@
+/* FM: React Application "root" */
+
 import { NavBar } from './views/NavBar';
 import { MainView } from './views/MainView';
 import { ResizableSplitViewHorizontal } from './components/ResizableSplitViewHorizontal';

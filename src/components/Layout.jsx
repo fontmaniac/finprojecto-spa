@@ -1,4 +1,4 @@
-/* FM: Defines the semantic structure of the app.Centralizes layout authority and exposes namespaced subcomponents for Sidebar and Main. */
+/* FM: Defines the semantic structure of the app. Centralizes layout authority and exposes namespaced subcomponents for Sidebar and Main. */
 
 // Layout.jsx
 export function Layout({ children }) {

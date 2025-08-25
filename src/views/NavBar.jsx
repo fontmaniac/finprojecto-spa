@@ -1,3 +1,5 @@
+/* FM: Container for navigation panes. */
+
 import { useState } from 'react';
 import { NavBarTop } from './NavBarTop';
 import { NavBarBottom } from './NavBarBottom';
