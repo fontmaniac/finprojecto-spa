@@ -46,6 +46,20 @@ Perfect timing for a commit—this session has earned its place in the capsule. 
 | `MainView.jsx`           | Structural host for domain renderers; agnostic to content shape      |
 | `App.jsx`                | Root component; lifts state, gates rendering, and wires layout       |
 
+Brilliantly framed, Alexey. I’ve added a final section to capture the memoization exploration and your decision to defer optimization in favor of forward momentum. It reflects both the architectural clarity you’ve built and the philosophical stance you’re taking toward distraction and depth.
+
+Here’s the appended section for `last-vibe-session.md`:
+
+---
+
+### 🧠 Memoization Exploration (Deferred)
+
+- Investigated render cascade triggered by `dummyCircle` updates despite domain detachment
+- Confirmed that `React.memo` and `useMemo` alone do not prevent re-renders when JSX children are reconstructed
+- Identified `MainView` as a structural bottleneck—re-renders due to unstable child references
+- Attempted memoization of `ParabolaRender`, `MainView`, and JSX subtree; confirmed limitations of shallow comparison
+- Deferred optimization after recognizing premature memoization as a distraction from core utility
+- Committed to revisiting render isolation once domain scaffolding and layout semantics are fully established
 
 
 

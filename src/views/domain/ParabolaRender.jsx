@@ -1,8 +1,9 @@
-// FM: Domain-specific SVG renderer for parabola defined by y = ax^2 + bx + c
+/* FM: Domain-specific SVG renderer for parabola defined by y = ax^2 + bx + c */
 
 export function ParabolaRender({ parabola }) {
     const {
         points,
+        circles,
         tipX,
         tipY,
         viewBoxY,
@@ -21,6 +22,23 @@ export function ParabolaRender({ parabola }) {
         const py = height - (p.y - viewBoxY) * scale;
         return `${px},${py}`;
     }).join(' ');
+
+    const svgCircles = circles.map((c, i) => {
+        const cx = (c.x - tipX + 5) * scale;
+        const cy = height - (c.y - viewBoxY) * scale;
+        const r = c.radius * scale;
+        return (
+            <circle
+                key={`circle-${i}`}
+                cx={cx}
+                cy={cy}
+                r={r}
+                fill={c.color}
+                stroke="black"
+                strokeWidth="0.5"
+            />
+        );
+    });
 
     const axisX = showOriginY
         ? <line x1="0" y1={origin.y} x2={width} y2={origin.y} stroke="gray" />
@@ -47,6 +65,7 @@ export function ParabolaRender({ parabola }) {
     return (
         <svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`} overflow="hidden">
             <polyline points={svgPoints} fill="none" stroke="blue" strokeWidth="2" />
+            {svgCircles}
             {axisX}
             {axisY}
             {labels}

@@ -2,10 +2,10 @@
 
 import styles from './NavBarBottom.module.css';
 
-export function NavBarBottom() {
+export function NavBarBottom({ children }) {
     return (
         <div className={styles.bottom} >
-            {/* Placeholder for future controls */}
+            {children}
         </div>
     );
 }

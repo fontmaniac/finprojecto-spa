@@ -1,4 +1,4 @@
-// FM: Domain-specific input group for parabola parameters (a, b, c)
+/* FM: Domain-specific input group for parabola parameters (a, b, c) */
 
 import styles from './ParabolaInputs.module.css';
 

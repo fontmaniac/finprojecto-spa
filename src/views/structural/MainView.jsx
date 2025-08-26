@@ -5,6 +5,8 @@ import styles from './MainView.module.css';
 import React, { useState, useEffect } from 'react';
 
 export function MainView({ children, trigger }) {
+    console.log('MainView rendered');
+
     const [shouldRender, setShouldRender] = useState(false);
 
     useEffect(() => {

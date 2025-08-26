@@ -1,4 +1,4 @@
-// FM: Domain model and computation logic for parabola defined by y = ax^2 + bx + c
+/* FM: Domain model and computation logic for parabola defined by y = ax^2 + bx + c */
 
 /**
  * @typedef {Object} ParabolaInputs
@@ -7,9 +7,14 @@
  * @property {number} c
  */
 
-export function makeDefaultInputs() {
-    return { a: 1, b: 0, c: 0 };
-}
+/**
+ * @typedef {Object} Circle
+ * @property {string} key
+ * @property {number} x
+ * @property {number} y
+ * @property {number} radius
+ * @property {string} color
+ */
 
 /**
  * @typedef {Object} ParabolaModel
@@ -17,6 +22,7 @@ export function makeDefaultInputs() {
  * @property {number} tipX
  * @property {number} tipY
  * @property {Array<{x: number, y: number}>} points
+ * @property {Array<Circle>} circles
  * @property {number} viewBoxY
  * @property {number} scale
  * @property {number} width
@@ -25,6 +31,14 @@ export function makeDefaultInputs() {
  * @property {boolean} showOriginX
  * @property {boolean} showOriginY
  */
+
+export function makeDefaultCircle() {
+    return { key: 'dummy', x: 0, y: 0, radius: 1, color: '#000000' };
+}
+
+export function makeDefaultInputs() {
+    return { a: 1, b: 0, c: 0 };
+}
 
 export function computeParabola(inputs) {
     console.log('Compute parabola with:', inputs);
@@ -36,10 +50,23 @@ export function computeParabola(inputs) {
     const rangeX = 5;
     const step = 0.1;
     const points = [];
+    const circles = [];
 
     for (let x = tipX - rangeX; x <= tipX + rangeX; x += step) {
         const y = a * x ** 2 + b * x + c;
         points.push({ x, y });
+    }
+
+    let circleIndex = 0;
+    for (let x = tipX - rangeX; x <= tipX + rangeX; x += 0.5) {
+        const y = a * x ** 2 + b * x + c;
+        circles.push({
+            key: `circle-${circleIndex++}`,
+            x,
+            y,
+            radius: 1,
+            color: 'red'
+        });
     }
 
     const yMin = Math.min(...points.map(p => p.y));
@@ -61,6 +88,7 @@ export function computeParabola(inputs) {
         tipX,
         tipY,
         points,
+        circles,
         viewBoxY,
         scale,
         width,

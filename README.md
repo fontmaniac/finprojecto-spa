@@ -6,32 +6,41 @@ A minimal, experimental React single-page application (SPA) designed as a utilit
 
 ```plaintext
 src/
+├── models/
+│   └── ParabolaModel.js                # Domain model and computation logic for y = ax² + bx + c
+│
 ├── views/
-│   ├── primitives/           # Layout primitives and reusable scaffolds
-│   │   ├── Layout.jsx        # Semantic layout wrapper with Sidebar and MainArea
-│   │   ├── Layout.module.css
-│   │   ├── ResizableSplitViewHorizontal.jsx  # Draggable horizontal split view
-│   │   └── ResizableSplitViewHorizontal.module.css
-│   ├── structural/           # Domain-agnostic structural components
-│   │   ├── NavBar.jsx        # Input and property editing interface
-│   │   ├── NavBarTop.jsx     # Initial parameter input
-│   │   ├── NavBarBottom.jsx  # Parameter fine-tuning
-│   │   └── MainView.jsx      # Chart display and interaction zone
-│   └── domain/               # Domain-specific components (reserved for future use)
-├── assets/                   # Static assets (currently empty)
-├── App.jsx                   # React application "root"
-├── App.css                   # Global styles for App
-├── index.css                 # Global base styles
-├── main.jsx                  # Vite entry point
+│   ├── primitives/                     # Layout primitives and reusable scaffolds
+│   │   ├── Layout.jsx                  # Semantic layout wrapper; centralizes layout authority
+│   │   └── ResizableSplitViewHorizontal.jsx  # Draggable horizontal split view for Sidebar/Main
+│
+│   ├── structural/                     # Domain-agnostic structural components
+│   │   ├── NavBar.jsx                  # Container for navigation panes
+│   │   ├── NavBarTop.jsx              # Structural wrapper; parametrized with domain input
+│   │   ├── NavBarBottom.jsx           # Presentation fine-tuning for selected subcomponent
+│   │   └── MainView.jsx               # Orchestrates domain render component
+│
+│   └── domain/                         # Domain-specific components
+│       ├── CircleProps.jsx            # Input group for editing a circle's properties
+│       ├── ParabolaInputs.jsx         # Input group for parabola parameters (a, b, c)
+│       └── ParabolaRender.jsx         # SVG renderer for parabola defined by y = ax² + bx + c
+│
+├── assets/                             # Static assets (currently empty)
+│
+├── App.jsx                             # React Application "root"
+├── App.css                             # Global styles for App
+├── index.css                           # Global base styles
+├── main.jsx                            # Vite entry point
+
 root/
-├── eslint.config.js          # ESLint configuration
-├── for-ai.md                 # Context scaffold for LLM assistants
-├── index.html                # HTML entry point for Vite
-├── package.json              # Project manifest and scripts
-├── package-lock.json         # Dependency lockfile
-├── README.md                 # Project overview and development philosophy
-├── scrape-fm.ps1             # Script to extract FM/NB comments for LLM context
-├── vite.config.js            # Vite bundler configuration
+├── eslint.config.js                    # ESLint configuration
+├── for-ai.md                           # Context scaffold for LLM assistants
+├── index.html                          # HTML entry point for Vite
+├── package.json                        # Project manifest and scripts
+├── package-lock.json                   # Dependency lockfile
+├── README.md                           # Project overview and development philosophy
+├── scrape-fm.ps1                       # Script to extract FM/NB comments for LLM context
+├── vite.config.js                      # Vite bundler configuration
 
 ```
 
