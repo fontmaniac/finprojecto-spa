@@ -1,38 +1,37 @@
-## 🧠 Context Capsule: Parabola Visualizer Session (25 Aug 2025)
+## 🧠 Context Capsule: Domain Detachment & State Wiring Session (26 Aug 2025)
 
 ### ✅ Goals Achieved
 
-- Integrated `NavBarTop` inputs (`a`, `b`, `c`) with `MainView` via `App.jsx` state and `onInit` trigger
-- Generated SVG graph of parabola `ax² + bx + c`, centered on vertex
-- Displayed coordinate axes with fallback edge alignment
-- Labeled vertex and edge coordinates (3 per axis)
-- Used fixed scale (~10×10 units) for visual consistency
-- Ensured layout composability and semantic clarity across components
+- **Extracted domain logic** from `NavBarTop` into `ParabolaInputs.jsx`, placed under `views/domain`
+- **Refactored `NavBarTop`** into a structural shell accepting `children`, enabling domain injection
+- **Rewired state**: introduced `committedParams` in `App.jsx` to gate rendering of `MainView`
+- **Established shared state** between `ParabolaInputs` and `MainView`, with optional reactive behavior
+- **Resolved React warning** by adding `key` props to `<text>` elements in SVG label array
 
-### 🧩 Current Architecture
+### 🧩 Architectural Shifts
 
-- `NavBar.jsx` and `NavBarTop.jsx` are stable and semantically clean
-- `MainView.jsx` renders SVG graph on `trigger` change
-- `App.jsx` lifts state and propagates parameters + refresh key
-- `.fillContainer` applied to stretch chart container
-- `preserveAspectRatio="none"` used to allow distortion
+- `NavBar.jsx` now composes `NavBarTop` and `NavBarBottom`, with `NavBarTop` parametrized via `children`
+- `ParabolaInputs.jsx` handles domain-specific input logic, using `params` object and `setParams` updater
+- `App.jsx` lifts state and separates transient input (`params`) from committed render state (`committedParams`)
+- `MainView.jsx` receives `a`, `b`, `c`, and `trigger` from `committedParams`, preserving Init-gated behavior
 
-### ⚠️ Outstanding Issue
+### 🧭 Behavioral Notes
 
-- SVG chart slightly overflows vertically, causing scrollbars
-- Suspected cause: incomplete height contract or aspect ratio preservation
-- DOM inspection shows correct attribute usage, but layout chain may leak height
-- `.container` uses `height: 100vh; width: 100vw` (confirmed)
-- Scroll persists despite `preserveAspectRatio="none"` and full-height styling
+- `params` updates immediately on input change; `committedParams` updates only on Init
+- `trigger` remains relevant for manual re-rendering, but could be removed if reactive behavior is desired
+- `ParabolaInputs` uses a DRY `handleChange` pattern keyed by param name
+- SVG rendering in `MainView` is stable and intention-revealing, with labeled vertex and axis ticks
 
-### 🧭 Next Steps
+### 📁 Updated File Roles
 
-- Traverse DOM manually to identify layout leak
-- Confirm height contracts across `#root`, `.container`, `.main`, and SVG parent
-- Consider adding `overflow: hidden` to SVG or its container
-- Optionally visualize layout bounds with debug outlines
-- Revisit layout rhythm and scaling logic once DOM is fully internalized
+| File                     | Role                                                                 |
+|--------------------------|----------------------------------------------------------------------|
+| `ParabolaInputs.jsx`     | Domain input group for parabola parameters; updates shared state     |
+| `NavBarTop.jsx`          | Structural wrapper for top navbar content; accepts domain children   |
+| `NavBar.jsx`             | Composes top and bottom navbar sections; injects domain logic        |
+| `App.jsx`                | Root component; lifts state, gates rendering, and wires layout       |
+| `MainView.jsx`           | Renders SVG parabola based on committed parameters and refresh key   |
 
 ---
 
-Let me know when you're ready to resume—I'll be here, ready to pick up the thread exactly where we left it.
+Let me know if you'd like to snapshot this capsule into `for-ai.md`, or if we’re ready to move forward—perhaps toward modularizing `MainView`, introducing domain toggles, or scaffolding a new visualizer.
