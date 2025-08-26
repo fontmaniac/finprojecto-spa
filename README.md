@@ -6,28 +6,32 @@ A minimal, experimental React single-page application (SPA) designed as a utilit
 
 ```plaintext
 src/
-├── components/          # Layout primitives and reusable scaffolds
-│   ├── Layout.jsx       # Semantic layout wrapper with Sidebar and Main
-│   ├── Layout.module.css
-│   ├── ResizableSplitViewHorizontal.jsx  # Draggable horizontal split view
-│   └── ResizableSplitViewHorizontal.module.css
-├── views/               # Domain-specific renderables
-│   ├── NavBar.jsx       # Input and property editing interface
-│   └── MainView.jsx     # Chart display and interaction zone
-├── assets/              # Static assets (currently empty)
-├── App.jsx              # React application "root"
-├── App.css              # Global styles for App
-├── index.css            # Global base styles
-├── main.jsx             # Vite entry point
+├── views/
+│   ├── primitives/           # Layout primitives and reusable scaffolds
+│   │   ├── Layout.jsx        # Semantic layout wrapper with Sidebar and MainArea
+│   │   ├── Layout.module.css
+│   │   ├── ResizableSplitViewHorizontal.jsx  # Draggable horizontal split view
+│   │   └── ResizableSplitViewHorizontal.module.css
+│   ├── structural/           # Domain-agnostic structural components
+│   │   ├── NavBar.jsx        # Input and property editing interface
+│   │   ├── NavBarTop.jsx     # Initial parameter input
+│   │   ├── NavBarBottom.jsx  # Parameter fine-tuning
+│   │   └── MainView.jsx      # Chart display and interaction zone
+│   └── domain/               # Domain-specific components (reserved for future use)
+├── assets/                   # Static assets (currently empty)
+├── App.jsx                   # React application "root"
+├── App.css                   # Global styles for App
+├── index.css                 # Global base styles
+├── main.jsx                  # Vite entry point
 root/
-├── eslint.config.js     # ESLint configuration
-├── for-ai.md            # Context scaffold for LLM assistants
-├── index.html           # HTML entry point for Vite
-├── package.json         # Project manifest and scripts
-├── package-lock.json    # Dependency lockfile
-├── README.md            # Project overview and development philosophy
-├── scrape-fm.ps1        # Script to extract FM/NB comments for LLM context
-├── vite.config.js       # Vite bundler configuration
+├── eslint.config.js          # ESLint configuration
+├── for-ai.md                 # Context scaffold for LLM assistants
+├── index.html                # HTML entry point for Vite
+├── package.json              # Project manifest and scripts
+├── package-lock.json         # Dependency lockfile
+├── README.md                 # Project overview and development philosophy
+├── scrape-fm.ps1             # Script to extract FM/NB comments for LLM context
+├── vite.config.js            # Vite bundler configuration
 
 ```
 

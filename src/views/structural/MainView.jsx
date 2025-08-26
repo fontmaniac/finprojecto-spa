@@ -48,19 +48,19 @@ export function MainView({ a, b, c, trigger }) {
             ? <line x1={originX} y1="0" x2={originX} y2={height} stroke="gray" />
             : <line x1="0" y1="0" x2="0" y2={height} stroke="gray" />;
 
-        const label = (x, y, anchor = 'middle') => (
-            <text x={x} y={y} fontSize="10" textAnchor={anchor} fill="black">
+        const label = (key, x, y, anchor = 'middle') => (
+            <text key={key} x={x} y={y} fontSize="10" textAnchor={anchor} fill="black">
                 ({(x / scale - 5 + vertexX).toFixed(1)}, {(viewBoxY + (height - y) / scale).toFixed(1)})
             </text>
         );
 
         const labels = [
-            label((vertexX - vertexX + 5) * scale, height - (vertexY - viewBoxY) * scale - 5),
-            label(0, height - 5, 'start'),
-            label(width, height - 5, 'end'),
-            label(originX, 10, 'middle'),
-            label(originX, height / 2, 'middle'),
-            label(originX, height - 10, 'middle'),
+            label("l1", (vertexX - vertexX + 5) * scale, height - (vertexY - viewBoxY) * scale - 5),
+            label("l2", 0, height - 5, 'start'),
+            label("l3", width, height - 5, 'end'),
+            label("l4", originX, 10, 'middle'),
+            label("l5", originX, height / 2, 'middle'),
+            label("l6", originX, height - 10, 'middle'),
         ];
 
         setSvgContent(
