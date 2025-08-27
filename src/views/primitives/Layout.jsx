@@ -9,7 +9,8 @@ export function Layout({ children }) {
     );
 }
 
-function Sidebar({ children, width = '450px' }) {
+function Sidebar({ children, width = '300px' }) {
+    console.log('Layout.Sidebar rendered');
     return (
         <div style={{ width, height: '100%' }}>
             {children}
@@ -18,6 +19,7 @@ function Sidebar({ children, width = '450px' }) {
 }
 
 function MainArea({ children }) {
+    console.log('Layout.MainArea rendered');
     return (
         <div style={{ flex: 1, height: '100%' }}>
             {children}

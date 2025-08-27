@@ -1,6 +1,6 @@
 /* FM: React Application "root" */
 
-import { useState, memo } from 'react';
+import { useState } from 'react';
 import { NavBar } from './views/structural/NavBar';
 import { MainView } from './views/structural/MainView';
 import { ResizableSplitViewHorizontal } from './views/primitives/ResizableSplitViewHorizontal';
@@ -20,11 +20,10 @@ function App() {
 
   const handleInit = (inputParams) => {
     console.log('Init parabola with:', inputParams);
+    setParams(inputParams);
     setParabola(computeParabola(inputParams));
     setRefreshKey(prev => prev + 1); // triggers re-render in MainView
   };
-
-  const MemoizedParabolaRender = memo(ParabolaRender);  
 
   return (
     <ResizableSplitViewHorizontal>
@@ -33,13 +32,11 @@ function App() {
           topChild={
             <ParabolaInputs
               params={params}
-              setParams={setParams}
               onInit={handleInit}
             />
           }
           bottomChild={<CircleProps 
             circleModel={dummyCircle} 
-            setCircleModel={setDummyCircle} 
             onUpdate={() => console.log('done nothing') }
             />
           }>
@@ -47,7 +44,7 @@ function App() {
       </Layout.Sidebar>
       <Layout.MainArea>
         <MainView trigger={refreshKey} >
-          <MemoizedParabolaRender parabola={parabola} />
+          <ParabolaRender parabola={parabola} />
         </MainView>
       </Layout.MainArea>
     </ResizableSplitViewHorizontal>

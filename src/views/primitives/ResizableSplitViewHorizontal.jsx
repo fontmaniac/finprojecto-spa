@@ -4,6 +4,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './ResizableSplitViewHorizontal.module.css';
 
 export function ResizableSplitViewHorizontal({ children }) {
+    console.log('ResizableSplitViewHorizontal rendered');
+
     const [sidebarWidth, setSidebarWidth] = useState(300);
     const isDragging = useRef(false);
 
@@ -23,6 +25,7 @@ export function ResizableSplitViewHorizontal({ children }) {
     };
 
     useEffect(() => {
+        console.log('ResizableSplitViewHorizontal.useEffect called');
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mouseup', handleMouseUp);
         return () => {
