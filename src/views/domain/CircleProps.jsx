@@ -1,10 +1,16 @@
 /* FM: Domain-specific input group for editing a single circle's properties (x, y, radius, key) */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './ParabolaInputs.module.css'; // Reuse existing styles
 
 export function CircleProps({ circleModel, onUpdate }) {
+    console.log('CircleProps renders with circleModel ', circleModel);
+
     const [myCircleModel, setCircleModel] = useState(circleModel);
+
+    useEffect(() => {
+        setCircleModel(circleModel);
+    }, [circleModel]);
 
     const makeChangeHandler = (key) => (e) => {
         setCircleModel(prev => ({ ...prev, [key]: +e.target.value }));

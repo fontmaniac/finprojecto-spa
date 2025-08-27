@@ -7,7 +7,7 @@ import { ResizableSplitViewHorizontal } from './views/primitives/ResizableSplitV
 import { Layout } from './views/primitives/Layout';
 import { ParabolaInputs } from './views/domain/ParabolaInputs.jsx';
 import { ParabolaRender } from './views/domain/ParabolaRender.jsx';
-import { makeDefaultInputs, makeDefaultCircle, computeParabola } from './models/ParabolaModel.js';
+import { makeDefaultInputs, computeParabola, updateCircle } from './models/ParabolaModel.js';
 import { CircleProps } from './views/domain/CircleProps.jsx';
 
 
@@ -16,7 +16,7 @@ function App() {
   const [params, setParams] = useState(makeDefaultInputs());
   const [parabola, setParabola] = useState(() => computeParabola(params));
   const [refreshKey, setRefreshKey] = useState(0);
-  const [dummyCircle, setDummyCircle] = useState(() => makeDefaultCircle());
+  const [circle, setCircle] = useState(0);
 
   const handleInit = (inputParams) => {
     console.log('Init parabola with:', inputParams);
@@ -24,6 +24,19 @@ function App() {
     setParabola(computeParabola(inputParams));
     setRefreshKey(prev => prev + 1); // triggers re-render in MainView
   };
+
+  const handleCircleSelection = (selectedCircle) => {
+    console.log('Circle selected', selectedCircle);
+    setCircle(selectedCircle);
+  };
+
+  const handleCircleUpdate = (updatedCircle) => {
+    console.log('Circle updated', updatedCircle);
+    setParabola(updateCircle(parabola, updatedCircle));
+    setRefreshKey(prev => prev + 1); // triggers re-render in MainView
+  };
+
+  console.log('App returns, with circle ', circle);
 
   return (
     <ResizableSplitViewHorizontal>
@@ -35,16 +48,19 @@ function App() {
               onInit={handleInit}
             />
           }
-          bottomChild={<CircleProps 
-            circleModel={dummyCircle} 
-            onUpdate={() => console.log('done nothing') }
-            />
+          bottomChild={
+            circle
+              ? <CircleProps
+                circleModel={circle}
+                onUpdate={handleCircleUpdate}
+              />
+              : null
           }>
         </NavBar>
       </Layout.Sidebar>
       <Layout.MainArea>
         <MainView trigger={refreshKey} >
-          <ParabolaRender parabola={parabola} />
+          <ParabolaRender parabola={parabola} onSelect={handleCircleSelection}/>
         </MainView>
       </Layout.MainArea>
     </ResizableSplitViewHorizontal>

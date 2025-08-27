@@ -30,6 +30,7 @@
  * @property {Object} origin
  * @property {boolean} showOriginX
  * @property {boolean} showOriginY
+ * @property {boolean} bottomAnchor
  */
 
 export function makeDefaultCircle() {
@@ -38,6 +39,10 @@ export function makeDefaultCircle() {
 
 export function makeDefaultInputs() {
     return { a: 1, b: 0, c: 0 };
+}
+
+export function updateCircle(parabola, circle) {
+    return {...parabola, circles: [...parabola.circles.filter(c => c.key != circle.key), {...circle}] }
 }
 
 export function computeParabola(inputs) {
@@ -72,7 +77,8 @@ export function computeParabola(inputs) {
     const yMin = Math.min(...points.map(p => p.y));
     const yMax = Math.max(...points.map(p => p.y));
     const padY = 1;
-    const viewBoxY = a > 0 ? yMin - padY : yMax + padY;
+    const bottomAnchor = a > 0;
+    const viewBoxY = bottomAnchor ? yMin - padY : yMax + padY;
 
     const scale = 20;
     const width = 10 * scale;
@@ -95,6 +101,7 @@ export function computeParabola(inputs) {
         height,
         origin: { x: originX, y: originY },
         showOriginX,
-        showOriginY
+        showOriginY,
+        bottomAnchor
     };
 }

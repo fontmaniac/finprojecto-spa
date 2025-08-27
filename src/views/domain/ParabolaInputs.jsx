@@ -4,6 +4,8 @@ import { useState } from 'react';
 import styles from './ParabolaInputs.module.css';
 
 export function ParabolaInputs({ params, onInit }) {
+    console.log('ParabolaInputs renders with params ', params);
+
     const [myParams, setParams] = useState(params);
 
     const makeChangeHandler = (key) => (e) => {

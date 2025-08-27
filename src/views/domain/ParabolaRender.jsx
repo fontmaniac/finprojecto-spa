@@ -1,6 +1,7 @@
 /* FM: Domain-specific SVG renderer for parabola defined by y = ax^2 + bx + c */
 
-export function ParabolaRender({ parabola }) {
+export function ParabolaRender({ parabola, onSelect }) {
+
     const {
         points,
         circles,
@@ -12,30 +13,38 @@ export function ParabolaRender({ parabola }) {
         height,
         origin,
         showOriginX,
-        showOriginY
+        showOriginY,
+        bottomAnchor
     } = parabola;
 
     console.log('ParabolaRender called with param ', parabola);
 
     const svgPoints = points.map(p => {
         const px = (p.x - tipX + 5) * scale;
-        const py = height - (p.y - viewBoxY) * scale;
+        const py = bottomAnchor
+            ? height - (p.y - viewBoxY) * scale
+            : (viewBoxY - p.y) * scale;
+
         return `${px},${py}`;
     }).join(' ');
 
     const svgCircles = circles.map((c, i) => {
         const cx = (c.x - tipX + 5) * scale;
-        const cy = height - (c.y - viewBoxY) * scale;
+        const cy = bottomAnchor
+            ? height - (c.y - viewBoxY) * scale
+            : (viewBoxY - c.y) * scale;
+
         const r = c.radius * scale;
         return (
             <circle
-                key={`circle-${i}`}
+                key={c.key}
                 cx={cx}
                 cy={cy}
                 r={r}
                 fill={c.color}
                 stroke="black"
                 strokeWidth="0.5"
+                onClick={() => onSelect?.(c)}
             />
         );
     });
@@ -54,7 +63,11 @@ export function ParabolaRender({ parabola }) {
     );
 
     const labels = [
-        label("l1", (tipX - tipX + 5) * scale, height - (tipY - viewBoxY) * scale - 5),
+        label("l1", (tipX - tipX + 5) * scale, 
+            bottomAnchor
+            ? height - (tipY - viewBoxY) * scale - 5
+            : (viewBoxY - tipY) * scale - 5),
+
         label("l2", 0, height - 5, 'start'),
         label("l3", width, height - 5, 'end'),
         label("l4", origin.x, 10, 'middle'),
