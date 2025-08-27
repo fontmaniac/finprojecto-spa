@@ -28,6 +28,8 @@ function App() {
   const handleCircleSelection = (selectedCircle) => {
     console.log('Circle selected', selectedCircle);
     setCircle(selectedCircle);
+    setParabola(updateCircle(parabola, selectedCircle));
+    setRefreshKey(prev => prev + 1); // triggers re-render in MainView
   };
 
   const handleCircleUpdate = (updatedCircle) => {
@@ -41,21 +43,12 @@ function App() {
   return (
     <ResizableSplitViewHorizontal>
       <Layout.Sidebar width="100%">
-        <NavBar 
-          topChild={
-            <ParabolaInputs
-              params={params}
-              onInit={handleInit}
-            />
-          }
-          bottomChild={
-            circle
-              ? <CircleProps
-                circleModel={circle}
-                onUpdate={handleCircleUpdate}
-              />
-              : null
-          }>
+        <NavBar>
+          <ParabolaInputs
+            params={params}
+            onInit={handleInit}
+          />
+          {circle ? <CircleProps circleModel={circle} onUpdate={handleCircleUpdate} /> : null}
         </NavBar>
       </Layout.Sidebar>
       <Layout.MainArea>

@@ -1,32 +1,30 @@
 /* FM: Domain-specific input group for parabola parameters (a, b, c) */
 
-import { useState } from 'react';
+import { useStagedModel } from '../../utils/useStagedModel';
 import styles from './ParabolaInputs.module.css';
 
 export function ParabolaInputs({ params, onInit }) {
     console.log('ParabolaInputs renders with params ', params);
 
-    const [myParams, setParams] = useState(params);
+    const { staged, update, commit, reset, isDirty } = useStagedModel(params);
 
-    const makeChangeHandler = (key) => (e) => {
-        setParams(prev => ({ ...prev, [key]: +e.target.value }));
-    };
+    const makeChangeHandler = (key) => (e) => { update(key, +e.target.value); };
         
     return (
         <div className={styles.top}>
             <div className={styles.inputGroup}>
                 <label htmlFor="a">a:</label>
-                <input id="a" type="number" value={myParams.a} onChange={makeChangeHandler('a')} />
+                <input id="a" type="number" value={staged.a} onChange={makeChangeHandler('a')} />
             </div>
             <div className={styles.inputGroup}>
                 <label htmlFor="b">b:</label>
-                <input id="b" type="number" value={myParams.b} onChange={makeChangeHandler('b')} />
+                <input id="b" type="number" value={staged.b} onChange={makeChangeHandler('b')} />
             </div>
             <div className={styles.inputGroup}>
                 <label htmlFor="c">c:</label>
-                <input id="c" type="number" value={myParams.c} onChange={makeChangeHandler('c')} />
+                <input id="c" type="number" value={staged.c} onChange={makeChangeHandler('c')} />
             </div>
-            <button className={styles.initButton} onClick={() => onInit(myParams)}>Init</button>
+            <button className={styles.initButton} onClick={() => onInit(commit())}>Init</button>
         </div>    
     );
 }
