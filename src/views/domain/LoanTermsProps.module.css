@@ -2,8 +2,8 @@
 
 .loan-terms-grid {
     display: grid;
-    grid-template-columns: max-content 40px 1fr 160px;
-    gap: 0.5rem 1rem;
+    grid-template-columns: max-content 20px 1fr 160px;
+    gap: 0.5rem 0.25rem;
     align-items: center;
     padding: 1rem;
     font-family: system-ui, sans-serif;
@@ -32,8 +32,10 @@
 }
 
 .loan-terms-grid input[type="radio"] {
-    margin: 0 auto;
+    margin: 0;
     display: block;
+    width: 100%;
+    max-width: 20px;
 }
 
 .loan-terms-grid button {

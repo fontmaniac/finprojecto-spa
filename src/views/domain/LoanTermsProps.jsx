@@ -38,6 +38,7 @@ export function LoanTermsProps({ initialTerms, onCalculate }) {
             />
             <input
                 type="number"
+                step="10000"
                 value={terms.principalAmount ?? ''}
                 onChange={(e) => updateField('principalAmount', +e.target.value)}
                 readOnly={isReadOnly('principalAmount')}
@@ -53,6 +54,7 @@ export function LoanTermsProps({ initialTerms, onCalculate }) {
             />
             <input
                 type="number"
+                step="10"
                 value={terms.paymentAmount ?? ''}
                 onChange={(e) => updateField('paymentAmount', +e.target.value)}
                 readOnly={isReadOnly('paymentAmount')}
@@ -71,6 +73,7 @@ export function LoanTermsProps({ initialTerms, onCalculate }) {
             <div />
             <input
                 type="number"
+                step="0.01"
                 value={terms.annualInterestRate ?? ''}
                 onChange={(e) => updateField('annualInterestRate', +e.target.value)}
                 readOnly={isReadOnly('annualInterestRate')}
