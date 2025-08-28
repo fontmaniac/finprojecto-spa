@@ -7,39 +7,37 @@ A minimal, experimental React single-page application (SPA) designed as a utilit
 ```plaintext
 src/
 ├── models/
-│   └── ParabolaModel.js                # Domain model and computation logic for y = ax² + bx + c
-│
+│   └── ParabolaModel.js                # Domain model for y = ax² + bx + c
+├── utils/
+│   └── useStagedModel.js              # Hook for staged editing of model props
 ├── views/
-│   ├── primitives/                     # Layout primitives and reusable scaffolds
-│   │   ├── Layout.jsx                  # Semantic layout wrapper; centralizes layout authority
-│   │   └── ResizableSplitViewHorizontal.jsx  # Draggable horizontal split view for Sidebar/Main
-│
+│   ├── primitives/                     # Layout primitives and scaffolds
+│   │   ├── Layout.jsx                  # Semantic layout wrapper
+│   │   └── ResizableSplitViewHorizontal.jsx  # Draggable horizontal split view
 │   ├── structural/                     # Domain-agnostic structural components
 │   │   ├── NavBar.jsx                  # Container for navigation panes
-│   │   ├── NavBarTop.jsx              # Structural wrapper; parametrized with domain input
-│   │   ├── NavBarBottom.jsx           # Presentation fine-tuning for selected subcomponent
-│   │   └── MainView.jsx               # Orchestrates domain render component
-│
+│   │   └── MainView.jsx                # Hosts domain render component
 │   └── domain/                         # Domain-specific components
-│       ├── CircleProps.jsx            # Input group for editing a circle's properties
-│       ├── ParabolaInputs.jsx         # Input group for parabola parameters (a, b, c)
-│       └── ParabolaRender.jsx         # SVG renderer for parabola defined by y = ax² + bx + c
-│
+│       ├── CircleProps.jsx            # Circle input group (x, y, radius, key)
+│       ├── ParabolaInputs.jsx         # Parabola input group (a, b, c)
+│       └── ParabolaRender.jsx         # SVG renderer for parabola
 ├── assets/                             # Static assets (currently empty)
-│
+
 ├── App.jsx                             # React Application "root"
-├── App.css                             # Global styles for App
-├── index.css                           # Global base styles
+├── App.css                             # Global styles
+├── index.css                           # Base styles
 ├── main.jsx                            # Vite entry point
 
 root/
+├── backlog.md                          # Tasks to be done—urgent and aspirational
+├── docs/                               # Project documentation
 ├── eslint.config.js                    # ESLint configuration
 ├── for-ai.md                           # Context scaffold for LLM assistants
-├── index.html                          # HTML entry point for Vite
-├── package.json                        # Project manifest and scripts
+├── index.html                          # HTML entry point
+├── package.json                        # Project manifest
 ├── package-lock.json                   # Dependency lockfile
-├── README.md                           # Project overview and development philosophy
-├── scrape-fm.ps1                       # Script to extract FM/NB comments for LLM context
+├── README.md                           # Project overview and dev philosophy
+├── scrape-fm.ps1                       # FM/NB extraction script
 ├── vite.config.js                      # Vite bundler configuration
 
 ```

@@ -1,3 +1,5 @@
+/* FM: Implementation of useStagedModel hook for "staged" way of editing / updating model props */
+
 import { useState, useEffect } from 'react';
 
 export function useStagedModel(initialModel) {
