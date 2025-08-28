@@ -6,7 +6,7 @@ import styles from './ResizableSplitViewHorizontal.module.css';
 export function ResizableSplitViewHorizontal({ children }) {
     console.log('ResizableSplitViewHorizontal rendered');
 
-    const [sidebarWidth, setSidebarWidth] = useState(300);
+    const [sidebarWidth, setSidebarWidth] = useState(550);
     const isDragging = useRef(false);
 
     const handleMouseDown = () => {

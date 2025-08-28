@@ -6,7 +6,7 @@ import styles from './ParabolaInputs.module.css';
 export function ParabolaInputs({ params, onInit }) {
     console.log('ParabolaInputs renders with params ', params);
 
-    const { staged, update, commit, reset, isDirty } = useStagedModel(params);
+    const { staged, update, commit } = useStagedModel(params);
 
     const makeChangeHandler = (key) => (e) => { update(key, +e.target.value); };
         

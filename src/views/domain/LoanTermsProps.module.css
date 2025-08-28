@@ -1,0 +1,47 @@
+/* FM: Styles for LoanTermsProps grid layout and input alignment */
+
+.loan-terms-grid {
+    display: grid;
+    grid-template-columns: max-content 40px 1fr 160px;
+    gap: 0.5rem 1rem;
+    align-items: center;
+    padding: 1rem;
+    font-family: system-ui, sans-serif;
+    background: yellowgreen;
+}
+
+.loan-terms-grid label {
+    text-align: right;
+    font-weight: 500;
+    padding-right: 0.5rem;
+    white-space: nowrap;
+}
+
+.loan-terms-grid input[type="number"],
+.loan-terms-grid select {
+    width: 100%;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+}
+
+.loan-terms-grid input[readonly] {
+    background-color: #f5f5f5;
+    color: #555;
+    border: 1px solid #ccc;
+}
+
+.loan-terms-grid input[type="radio"] {
+    margin: 0 auto;
+    display: block;
+}
+
+.loan-terms-grid button {
+    grid-column: 3;
+    justify-self: stretch;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+

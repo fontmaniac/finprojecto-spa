@@ -6,7 +6,7 @@ import styles from './ParabolaInputs.module.css'; // Reuse existing styles
 export function CircleProps({ circleModel, onUpdate }) {
     console.log('CircleProps renders with circleModel ', circleModel);
 
-    const { staged, update, commit, reset, isDirty } = useStagedModel(circleModel);
+    const { staged, update, commit, isDirty } = useStagedModel(circleModel);
 
     const makeChangeHandler = (key) => (e) => { update(key, +e.target.value); };
 
