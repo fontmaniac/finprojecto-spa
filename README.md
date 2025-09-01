@@ -7,38 +7,44 @@ A minimal, experimental React single-page application (SPA) designed as a utilit
 ```plaintext
 src/
 ├── models/
-│   └── ParabolaModel.js                # Domain model for y = ax² + bx + c
+│   ├── Definitions.js                      # Common definitions
+│   ├── LoanSimulationModel.js              # Lifetime simulation structures
+│   ├── LoanTermsModel.js                   # Loan terms data model
+│   └── ParabolaModel.js                    # Domain model for y = ax² + bx + c
 ├── utils/
-│   └── useStagedModel.js              # Hook for staged editing of model props
+│   └── useStagedModel.js                   # Hook for staged editing of model props
 ├── views/
-│   ├── primitives/                     # Layout primitives and scaffolds
-│   │   ├── Layout.jsx                  # Semantic layout wrapper
-│   │   └── ResizableSplitViewHorizontal.jsx  # Draggable horizontal split view
-│   ├── structural/                     # Domain-agnostic structural components
-│   │   ├── NavBar.jsx                  # Container for navigation panes
-│   │   └── MainView.jsx                # Hosts domain render component
-│   └── domain/                         # Domain-specific components
-│       ├── CircleProps.jsx            # Circle input group (x, y, radius, key)
-│       ├── ParabolaInputs.jsx         # Parabola input group (a, b, c)
-│       └── ParabolaRender.jsx         # SVG renderer for parabola
-├── assets/                             # Static assets (currently empty)
+│   ├── primitives/                         # Layout primitives and scaffolds
+│   │   ├── Layout.jsx                      # Semantic layout wrapper
+│   │   └── ResizableSplitViewHorizontal.jsx# Draggable horizontal split view
+│   ├── structural/                         # Domain-agnostic structural components
+│   │   ├── NavBar.jsx                      # Container for navigation panes
+│   │   └── MainView.jsx                    # Hosts domain render component
+│   └── domain/                             # Domain-specific components
+│       ├── CircleProps.jsx                 # Circle input group (x, y, radius, key)
+│       ├── LoanSimulationOutcomeProps.jsx  # Display of computed loan outcome
+│       ├── LoanSimulationPlotlyRender.jsx  # Plotly visualisation of loan slices
+│       ├── LoanTermsProps.jsx              # Input UI for loan terms sheet
+│       ├── ParabolaInputs.jsx              # Parabola input group (a, b, c)
+│       └── ParabolaRender.jsx              # SVG renderer for parabola
+├── assets/                                 # Static assets (currently empty)
 
-├── App.jsx                             # React Application "root"
-├── App.css                             # Global styles
-├── index.css                           # Base styles
-├── main.jsx                            # Vite entry point
+├── App.jsx                                 # React Application "root"
+├── App.css                                 # Global styles
+├── index.css                               # Base styles
+├── main.jsx                                # Vite entry point
 
 root/
-├── backlog.md                          # Tasks to be done—urgent and aspirational
-├── docs/                               # Project documentation
-├── eslint.config.js                    # ESLint configuration
-├── for-ai.md                           # Context scaffold for LLM assistants
-├── index.html                          # HTML entry point
-├── package.json                        # Project manifest
-├── package-lock.json                   # Dependency lockfile
-├── README.md                           # Project overview and dev philosophy
-├── scrape-fm.ps1                       # FM/NB extraction script
-├── vite.config.js                      # Vite bundler configuration
+├── backlog.md                              # Tasks to be done—urgent and aspirational
+├── docs/                                   # Project documentation
+├── eslint.config.js                        # ESLint configuration
+├── for-ai.md                               # Context scaffold for LLM assistants
+├── index.html                              # HTML entry point
+├── package.json                            # Project manifest
+├── package-lock.json                       # Dependency lockfile
+├── README.md                               # Project overview and dev philosophy
+├── scrape-fm.ps1                           # FM/NB extraction script
+├── vite.config.js                          # Vite bundler configuration
 
 ```
 

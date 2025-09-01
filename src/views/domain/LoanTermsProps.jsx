@@ -112,6 +112,42 @@ export function LoanTermsProps({ initialTerms, onCalculate }) {
             />
             <div />
 
+            <div /><div /><div /><div />
+            <div /><div /><div /><div />
+
+            {/* Initial Offset Amount*/}
+            <label>Initial Offset:</label>
+            <div />
+            <input
+                type="number"
+                step="10000"
+                value={terms.initialOffsetAmount ?? ''}
+                onChange={(e) => updateField('initialOffsetAmount', +e.target.value)}
+            />
+            <div />
+
+            {/* Regular Offset Top-Up:*/}
+            <label>Offset Top-up:</label>
+            <div />
+            <input
+                type="number"
+                step="10"
+                value={terms.offsetTopUpAmount ?? ''}
+                onChange={(e) => updateField('offsetTopUpAmount', +e.target.value)}
+            />
+            <div />
+
+            {/* Regular Extra Repayments:*/}
+            <label>Extra Repayment:</label>
+            <div />
+            <input
+                type="number"
+                step="10"
+                value={terms.extraRepaymentAmount ?? ''}
+                onChange={(e) => updateField('extraRepaymentAmount', +e.target.value)}
+            />
+            <div />
+
             {/* Calculate Button */}
             <div /> 
             <div /> 

@@ -1,45 +1,35 @@
-## last-vibe-session.md
+## 🧠 Context Capsule: Last Vibe Session — 2025-09-01
 
-**SESSION:** 2025-08-27  
-**USER:** Alexey  
-**MODE:** Reflective, architectural checkpoint
+### 🧩 Architectural Progress
 
----
+- Finalized display logic for `totalRepayments` and `offsetMatchPoint` using `toText(num)` and `toYears(num)` pipeline.
+- Introduced `Intl.NumberFormat` for currency formatting and year rounding, with semantic fallback for missing values.
+- Clarified behavior of `toFixed(n)`—standard rounding, returns string, used for year precision.
+- Deferred pluralization and display suppression logic for fractional years—left open for future refinement.
 
-### GOALS
+### 📦 File Additions (from `for-ai.md`)
 
-- Scaffolding phase complete; layout and render boundaries stabilized  
-- Transitioning toward interactive pipeline: selection/editing of domain elements  
-- Preparing for mutation propagation and semantic clarity across views
+- `models/Definitions.js` — Common definitions
+- `models/LoanSimulationModel.js` — Full loan lifecycle simulation
+- `models/LoanTermsModel.js` — Terms model for loan calculator
+- `views/domain/LoanSimulationOutcomeProps.jsx` — Outcome display
+- `views/domain/LoanSimulationPlotlyRender.jsx` — Plotly visualisation
+- `views/domain/LoanTermsProps.jsx` — Input UI for loan terms
 
----
+### 📁 Updated Folder Structure
 
-### NOTES
+Reflected in `README.md`, with expanded modeling layer and domain render pipeline. Preserved semantic layout boundaries and compositional clarity.
 
-- Spread syntax used intentionally to signal "by value" semantics  
-- Circle derivation from parabola model structurally guaranteed  
-- Order of operations flagged for future importance; currently non-blocking  
-- Boilerplate accepted as scaffold—verbosity tolerated for extensibility  
-- Theming deferred; aesthetic intent will emerge from semantic structure
+### 🧠 Mental State
 
----
+- Reflective and focused, with high architectural momentum.
+- Satisfaction from semantic alignment and display clarity.
+- Hopes high for next session—computation and visualisation foundations now solid.
 
-### VIBE
+### 🛠️ Next Likely Moves
 
-- Solo dev autonomy preserved—no external accountability  
-- Low mood redirected into architectural flow  
-- High signal, low noise; rhythm maintained through compositional clarity  
-- No premature abstraction—structure emerges through use
+- Layer mutation propagation across views.
+- Formalize semantic capsules for display logic.
+- Possibly introduce pluralization and conditional display suppression.
+- Extend interactivity pipeline for FinprojectoSPA.
 
----
-
-### NEXT
-
-- Layer interactivity: selection, editing, propagation  
-- Optional: formalize mutation semantics for future scale/collab  
-- Maintain rhythm; let abstractions emerge from necessity  
-- Revisit theming once semantic surface demands it
-
----
-
-Let me know if you'd like to version this or nest it under a broader capsule like `pipeline-phase-1.md`.

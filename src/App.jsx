@@ -11,6 +11,9 @@ import { makeDefaultInputs, computeParabola, updateCircle } from './models/Parab
 import { CircleProps } from './views/domain/CircleProps.jsx';
 import { makeDefaultLoanTerms, computeLoanTerms } from './models/LoanTermsModel.js';
 import { LoanTermsProps } from './views/domain/LoanTermsProps.jsx';
+import { LoanSimulationPlotlyRender } from './views/domain/LoanSimulationPlotlyRender.jsx';
+import { generateLoanSimulation, extractLoanSimulationOutcome } from './models/LoanSimulationModel.js';
+import { LoanSimulationOutcomeProps } from './views/domain/LoanSimulationOutcomeProps.jsx';
 
 
 function App() {
@@ -20,6 +23,8 @@ function App() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [circle, setCircle] = useState(0);
   const [loanTerms, setLoanTerms] = useState(makeDefaultLoanTerms());
+  const [loanSimulation, setLoanSimulation] = useState(0);
+  const [loanSimulationOutcome, setLoanSimulationOutcome] = useState(0);
 
   console.log('Default loan terms ', loanTerms);
 
@@ -30,12 +35,12 @@ function App() {
     setRefreshKey(prev => prev + 1); // triggers re-render in MainView
   };
 
-  const handleCircleSelection = (selectedCircle) => {
-    console.log('Circle selected', selectedCircle);
-    setCircle(selectedCircle);
-    setParabola(updateCircle(parabola, selectedCircle));
-    setRefreshKey(prev => prev + 1); // triggers re-render in MainView
-  };
+  // const handleCircleSelection = (selectedCircle) => {
+  //   console.log('Circle selected', selectedCircle);
+  //   setCircle(selectedCircle);
+  //   setParabola(updateCircle(parabola, selectedCircle));
+  //   setRefreshKey(prev => prev + 1); // triggers re-render in MainView
+  // };
 
   const handleCircleUpdate = (updatedCircle) => {
     console.log('Circle updated', updatedCircle);
@@ -48,6 +53,10 @@ function App() {
     const computedLoanTerms = computeLoanTerms(committedLoanTerms);
     console.log('Calculated ', computedLoanTerms);
     setLoanTerms(computedLoanTerms);
+    const simulation = generateLoanSimulation(computedLoanTerms); 
+    setLoanSimulation(simulation);
+    setLoanSimulationOutcome(extractLoanSimulationOutcome(simulation, committedLoanTerms.paymentFreqUnit))
+    setRefreshKey(prev => prev + 1); // triggers re-render in MainView
   };
 
 
@@ -57,23 +66,16 @@ function App() {
     <ResizableSplitViewHorizontal>
       <Layout.Sidebar width="100%">
         <NavBar>
-          <ParabolaInputs
-            params={params}
-            onInit={handleInit}
-          />
-          {circle 
-          ? <CircleProps 
-              circleModel={circle} 
-              onUpdate={handleCircleUpdate} /> 
-          : null}
           <LoanTermsProps 
             initialTerms={loanTerms} 
             onCalculate={handleCalculate}/>
+          <LoanSimulationOutcomeProps 
+            outcome={loanSimulationOutcome} />
         </NavBar>
       </Layout.Sidebar>
       <Layout.MainArea>
         <MainView trigger={refreshKey} >
-          <ParabolaRender parabola={parabola} onSelect={handleCircleSelection}/>
+          <LoanSimulationPlotlyRender slices={loanSimulation}/>
         </MainView>
       </Layout.MainArea>
     </ResizableSplitViewHorizontal>

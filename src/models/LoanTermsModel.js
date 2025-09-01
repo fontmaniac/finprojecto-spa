@@ -12,19 +12,25 @@ import { PeriodUnit, normaliseTermLength, deNormaliseTermLength } from './Defini
  * @property {PeriodUnit} termLengthUnit
  * @property {number} termLengthNorm
  * @property {string} fieldToCalculate
+ * @property {number} initialOffsetAmount
+ * @property {number} extraRepaymentAmount
+ * @property {number} offsetTopUpAmount
  *
  */
 
 export function makeDefaultLoanTerms() {
     return { 
-        principalAmount: undefined,
+        principalAmount: 300000,
         paymentAmount: undefined, 
         paymentFreqUnit: 'month', 
         annualInterestRate: 0.07, 
-        termLength: 1,
+        termLength: 30,
         termLengthUnit: 'year',
         termLengthNorm: undefined,
-        fieldToCalculate: 'paymentAmount'
+        fieldToCalculate: 'paymentAmount',
+        initialOffsetAmount: 0,
+        extraRepaymentAmount: 0,
+        offsetTopUpAmount: 0
     };
 }
 

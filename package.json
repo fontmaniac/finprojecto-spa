@@ -12,8 +12,11 @@
     "aictx": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scrape-fm.ps1"
   },
   "dependencies": {
+    "plotly.js": "^3.1.0",
+    "plotly.js-dist-min": "^3.1.0",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-plotly.js": "^2.6.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

@@ -15,6 +15,9 @@ export function ResizableSplitViewHorizontal({ children }) {
     };
 
     const handleMouseUp = () => {
+        if (isDragging.current) {
+            window.dispatchEvent(new Event('horizontalResize'));
+        }
         isDragging.current = false;
         document.body.style.cursor = 'default';
     };

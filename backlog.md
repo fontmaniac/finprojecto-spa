@@ -34,3 +34,27 @@ Sketch a reusable hook `useStagedModel(initialModel)` that encapsulates:
 - `useStagedModel.withSchema(schema)` → typed validation
 
 > This entry formalizes the staged editing pattern as a reusable abstraction, paving the way for cleaner input pipelines and future extensibility.
+
+## [2025-09-01]
+
+- Tie "tick density" along x-axis to repayment frequency.
+
+### 🪞 Backlog Item: Shared Visual Grammar Capsule  
+
+**Type:** Architectural Enhancement  
+**Status:** Deferred  
+**Priority:** Medium  
+**Context:**  
+Current styling across `LoanTermsProps` and `LoanSimulationOutcomeProps` is manually aligned but lacks a formalized shared grammar. Visual consistency is maintained ad hoc, without a composable abstraction.
+
+**Intent:**  
+Introduce a semantic styling capsule (e.g. `PropsGrid.module.css`) to unify layout primitives, label alignment, input treatment, and background theming across domain props components. Enable variant-based extension (e.g. `editable`, `readonly`, `highlighted`) while preserving authorial control.
+
+**Notes:**  
+
+- Consider FM-aligned naming for variants and layout roles.  
+- Avoid premature abstraction—only extract once 3+ components converge.  
+- May benefit from scoped CSS modules or context-aware styling hooks.  
+- Align with future mutation provenance indicators or semantic overlays.
+
+
