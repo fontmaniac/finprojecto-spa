@@ -1,6 +1,6 @@
 /* FM: React Application "root" */
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { NavBar } from './views/structural/NavBar';
 import { MainView } from './views/structural/MainView';
 import { ResizableSplitViewHorizontal } from './views/primitives/ResizableSplitViewHorizontal';
@@ -14,6 +14,7 @@ import { LoanTermsProps } from './views/domain/LoanTermsProps.jsx';
 import { LoanSimulationPlotlyRender } from './views/domain/LoanSimulationPlotlyRender.jsx';
 import { generateLoanSimulation, extractLoanSimulationOutcome } from './models/LoanSimulationModel.js';
 import { LoanSimulationOutcomeProps } from './views/domain/LoanSimulationOutcomeProps.jsx';
+import { LoanSliceProps } from './views/domain/LoanSliceProps.jsx';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
   const [loanTerms, setLoanTerms] = useState(makeDefaultLoanTerms());
   const [loanSimulation, setLoanSimulation] = useState(0);
   const [loanSimulationOutcome, setLoanSimulationOutcome] = useState(0);
+  const [loanSlice, setLoanSlice] = useState(undefined);
 
   console.log('Default loan terms ', loanTerms);
 
@@ -56,9 +58,16 @@ function App() {
     const simulation = generateLoanSimulation(computedLoanTerms); 
     setLoanSimulation(simulation);
     setLoanSimulationOutcome(extractLoanSimulationOutcome(simulation, committedLoanTerms.paymentFreqUnit))
+    setLoanSlice(undefined);
     setRefreshKey(prev => prev + 1); // triggers re-render in MainView
   };
 
+  const handleSliceSelect = useCallback((sliceIndex) => {
+    if (sliceIndex < 0 || sliceIndex >= loanSimulation.length) return;
+    const slice = loanSimulation[sliceIndex];
+    console.log('Captured slice selection w/idx ', sliceIndex, slice);
+    setLoanSlice(slice);
+  }, [loanSimulation]);
 
   console.log('App returns, with circle ', circle);
 
@@ -71,11 +80,20 @@ function App() {
             onCalculate={handleCalculate}/>
           <LoanSimulationOutcomeProps 
             outcome={loanSimulationOutcome} />
+          {loanSlice && (
+            <LoanSliceProps
+              slice={loanSlice}
+              onUpdate={(idx, props) => {
+                console.log('Loan Slice ', idx, ' updated w/props ', props);
+              }}
+              onIndexChange={handleSliceSelect}
+            />
+          )}
         </NavBar>
       </Layout.Sidebar>
       <Layout.MainArea>
         <MainView trigger={refreshKey} >
-          <LoanSimulationPlotlyRender slices={loanSimulation}/>
+          <LoanSimulationPlotlyRender slices={loanSimulation} onSliceSelect={handleSliceSelect}/>
         </MainView>
       </Layout.MainArea>
     </ResizableSplitViewHorizontal>

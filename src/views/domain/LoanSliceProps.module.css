@@ -1,0 +1,63 @@
+/* FM: Styles for LoanSliceProps grid layout and editable fields */
+
+.loan-slice-grid {
+    display: grid;
+    grid-template-columns: 180px 20px 1fr;
+    gap: 0.5rem 0.25rem;
+    align-items: center;
+    padding: 1rem;
+    font-family: system-ui, sans-serif;
+    background: rgb(232, 152, 208);
+}
+
+.loan-slice-grid label {
+    text-align: right;
+    font-weight: 500;
+    padding-right: 0.5rem;
+    white-space: nowrap;
+}
+
+.loan-slice-grid input[type="number"] {
+    width: 100%;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+}
+
+.loan-slice-grid input[readonly] {
+    background-color: #f5f5f5;
+    color: #555;
+    border: 1px solid #ccc;
+}
+
+.loan-slice-grid button {
+    grid-column: 3;
+    justify-self: start;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.button-row {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    margin-top: 1rem;
+}
+
+.index-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.index-control button,
+.index-control span {
+    font-size: 1rem;
+    line-height: 1;
+    padding: 1;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}

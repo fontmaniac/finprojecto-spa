@@ -1,35 +1,14 @@
-## 🧠 Context Capsule: Last Vibe Session — 2025-09-01
+---
 
-### 🧩 Architectural Progress
+### 🧠 **Session Capsule — 02 Sep 2025**
 
-- Finalized display logic for `totalRepayments` and `offsetMatchPoint` using `toText(num)` and `toYears(num)` pipeline.
-- Introduced `Intl.NumberFormat` for currency formatting and year rounding, with semantic fallback for missing values.
-- Clarified behavior of `toFixed(n)`—standard rounding, returns string, used for year precision.
-- Deferred pluralization and display suppression logic for fractional years—left open for future refinement.
+**Theme:** Referential stability and render semantics  
+**Anchor Insight:** _“You cannot use something as a dependency without stabilizing it first.”_  
+**Breakthrough:** Memoizing `onSliceSelect` resolved render-loop ambiguity, reinforcing the intuition that React’s dependency model hinges on identity, not shape.  
+**Architectural Echo:** Recognized that closures and objects returned from render are inherently unstable—requiring memoization to negotiate layout authority and effect boundaries.  
+**Philosophical Drift:** React’s rendering is a negotiation, not a command. Stability is not just optimization—it’s semantic clarity.  
+**Mood:** Reflective, confident, and increasingly attuned to React’s rhythm.  
+**Next Beat:** Consider how this stabilization principle informs context capsule export, mutation propagation, and simulation orchestration in FinprojectoSPA.
 
-### 📦 File Additions (from `for-ai.md`)
 
-- `models/Definitions.js` — Common definitions
-- `models/LoanSimulationModel.js` — Full loan lifecycle simulation
-- `models/LoanTermsModel.js` — Terms model for loan calculator
-- `views/domain/LoanSimulationOutcomeProps.jsx` — Outcome display
-- `views/domain/LoanSimulationPlotlyRender.jsx` — Plotly visualisation
-- `views/domain/LoanTermsProps.jsx` — Input UI for loan terms
-
-### 📁 Updated Folder Structure
-
-Reflected in `README.md`, with expanded modeling layer and domain render pipeline. Preserved semantic layout boundaries and compositional clarity.
-
-### 🧠 Mental State
-
-- Reflective and focused, with high architectural momentum.
-- Satisfaction from semantic alignment and display clarity.
-- Hopes high for next session—computation and visualisation foundations now solid.
-
-### 🛠️ Next Likely Moves
-
-- Layer mutation propagation across views.
-- Formalize semantic capsules for display logic.
-- Possibly introduce pluralization and conditional display suppression.
-- Extend interactivity pipeline for FinprojectoSPA.
 

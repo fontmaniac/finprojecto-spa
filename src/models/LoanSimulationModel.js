@@ -96,7 +96,7 @@ function generateNextSlice(last) {
 } 
 
 function completeSlice(slice) {
-    const interestCharged = Math.max(slice.startLoanBalance - slice.startOffsetBalance, 0) * slice.periodInterestRate;
+    const interestCharged = Math.max(slice.startLoanBalance - Math.max(slice.startOffsetBalance, 0), 0) * slice.periodInterestRate;
     const endLoanBalance = slice.startLoanBalance + interestCharged - slice.repayment - slice.extraRepayment;
     const endOffsetBalance = slice.startOffsetBalance + slice.offsetTopUp;
     return {
@@ -129,9 +129,11 @@ export function extractLoanSimulationOutcome(slices, paymentFreqUnit) {
     let totalRepaymentAmount = 0;
     let totalInterestCharged = 0;
     let offsetMatchPoint = undefined;
+    let totalBalanceAtCompletion = 0;
 
     for (let i = 0; i < slices.length; ++i) {
         const slice = slices[i];
+        totalBalanceAtCompletion = slice.startOffsetBalance - slice.startLoanBalance;
         if (slice.endLoanBalance === null) break;
         
         totalRepayments += 1;
@@ -148,6 +150,7 @@ export function extractLoanSimulationOutcome(slices, paymentFreqUnit) {
         totalRepaymentAmount: totalRepaymentAmount,
         totalInterestCharged: totalInterestCharged,
         offsetMatchPoint: offsetMatchPoint,
+        totalBalanceAtCompletion: totalBalanceAtCompletion,
         paymentFreqUnit: paymentFreqUnit
     };
 }

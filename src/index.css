@@ -64,6 +64,18 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+button:disabled {
+  background-color: #ccc;  /* Soft grey background */
+  color: #888;             /* Faint text tone */
+  border: 1px solid #aaa;  /* Optional: subtle border for shape retention */
+  cursor: not-allowed;       /* Optional: reinforces non-interactivity */
+  opacity: 0.8;              /* Optional: slight fade without losing contrast */
+}
+
+button {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

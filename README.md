@@ -15,7 +15,7 @@ src/
 │   └── useStagedModel.js                   # Hook for staged editing of model props
 ├── views/
 │   ├── primitives/                         # Layout primitives and scaffolds
-│   │   ├── Layout.jsx                      # Semantic layout wrapper
+│   │   ├── Layout.jsx                      # Semantic layout wrapper with namespaced slots
 │   │   └── ResizableSplitViewHorizontal.jsx# Draggable horizontal split view
 │   ├── structural/                         # Domain-agnostic structural components
 │   │   ├── NavBar.jsx                      # Container for navigation panes
@@ -24,6 +24,7 @@ src/
 │       ├── CircleProps.jsx                 # Circle input group (x, y, radius, key)
 │       ├── LoanSimulationOutcomeProps.jsx  # Display of computed loan outcome
 │       ├── LoanSimulationPlotlyRender.jsx  # Plotly visualisation of loan slices
+│       ├── LoanSliceProps.jsx              # Staged editing of individual loan slices
 │       ├── LoanTermsProps.jsx              # Input UI for loan terms sheet
 │       ├── ParabolaInputs.jsx              # Parabola input group (a, b, c)
 │       └── ParabolaRender.jsx              # SVG renderer for parabola
@@ -43,9 +44,7 @@ root/
 ├── package.json                            # Project manifest
 ├── package-lock.json                       # Dependency lockfile
 ├── README.md                               # Project overview and dev philosophy
-├── scrape-fm.ps1                           # FM/NB extraction script
-├── vite.config.js                          # Vite bundler configuration
-
+├── scrape-fm.ps1                          
 ```
 
 ## 🧠 Architectural Notes

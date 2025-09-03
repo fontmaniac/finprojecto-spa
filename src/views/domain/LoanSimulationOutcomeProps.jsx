@@ -71,6 +71,15 @@ export function LoanSimulationOutcomeProps({ outcome }) {
                 readOnly
             />
 
+            {/* Total Balance At Completion */}
+            <label>Final Balance:</label>
+            <div />
+            <input
+                type="text"
+                value={formatCurrency(outcome.totalBalanceAtCompletion) ?? ''}
+                readOnly
+            />
+
             {/* Future fields can be added here */}
         </div>
     );
