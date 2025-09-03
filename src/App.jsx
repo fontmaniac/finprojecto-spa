@@ -12,7 +12,7 @@ import { CircleProps } from './views/domain/CircleProps.jsx';
 import { makeDefaultLoanTerms, computeLoanTerms } from './models/LoanTermsModel.js';
 import { LoanTermsProps } from './views/domain/LoanTermsProps.jsx';
 import { LoanSimulationPlotlyRender } from './views/domain/LoanSimulationPlotlyRender.jsx';
-import { generateLoanSimulation, extractLoanSimulationOutcome } from './models/LoanSimulationModel.js';
+import { generateLoanSimulation, extractLoanSimulationOutcome, completeSlice } from './models/LoanSimulationModel.js';
 import { LoanSimulationOutcomeProps } from './views/domain/LoanSimulationOutcomeProps.jsx';
 import { LoanSliceProps } from './views/domain/LoanSliceProps.jsx';
 
@@ -87,6 +87,7 @@ function App() {
                 console.log('Loan Slice ', idx, ' updated w/props ', props);
               }}
               onIndexChange={handleSliceSelect}
+              completeSlice={completeSlice}
             />
           )}
         </NavBar>

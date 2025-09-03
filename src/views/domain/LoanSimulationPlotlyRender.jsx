@@ -13,46 +13,82 @@ export function LoanSimulationPlotlyRender({ slices, onSliceSelect }) {
         const sliceIndices = slices.map(slice => slice.sliceIndex);
         const loanBalances = slices.map(slice => slice.startLoanBalance);
         const offsetBalances = slices.map(slice => slice.startOffsetBalance);
+        const totalRepaymentsToDate = slices.map(slice => slice.totalRepaymentsAtStart);
+        const totalInterestToDate = slices.map(slice => slice.totalInterestAtStart);
         const interestCharges = slices.map(slice => slice.interestCharged);
         const repayments = slices.map(slice => slice.repayment);
         const extraRepayments = slices.map(slice => slice.extraRepayment);
+        const offsetTopUps = slices.map(slice => slice.offsetTopUp);
 
         const data = [
+            // Domain A
             {
                 x: sliceIndices,
                 y: loanBalances,
                 type: 'bar',
                 name: 'Start Loan Balance',
-                marker: { color: 'rgba(245, 58, 16, 0.7)' }
+                marker: { color: 'rgba(245, 58, 16, 0.7)' },
+                yaxis: 'y'
             },
             {
                 x: sliceIndices,
                 y: offsetBalances,
                 type: 'bar',
                 name: 'Start Offset Balance',
-                marker: { color: 'rgba(6, 246, 98, 0.7)' }
+                marker: { color: 'rgba(6, 246, 98, 0.7)' },
+                yaxis: 'y'
             },
+            {
+                x: sliceIndices,
+                y: totalRepaymentsToDate,
+                type: 'bar',
+                name: 'Total Repayments To Date',
+                marker: { color: 'rgba(201, 12, 62, 0.7)' },
+                yaxis: 'y'
+            },
+            {
+                x: sliceIndices,
+                y: totalInterestToDate,
+                type: 'bar',
+                name: 'Total Interest To Date',
+                marker: { color: 'rgba(246, 6, 238, 0.7)' },
+                yaxis: 'y'
+            },
+
+            // Domain B
             {
                 x: sliceIndices,
                 y: interestCharges,
                 type: 'bar',
                 name: 'Interest Charged',
-                marker: { color: 'rgba(83, 21, 216, 0.7)' }
+                marker: { color: 'rgba(83, 21, 216, 0.7)' },
+                yaxis: 'y2'
             },
             {
                 x: sliceIndices,
                 y: repayments,
                 type: 'bar',
                 name: 'Repayment',
-                marker: { color: '#ffff00' }
+                marker: { color: '#ffff00' },
+                yaxis: 'y2'
             },
             {
                 x: sliceIndices,
                 y: extraRepayments,
                 type: 'bar',
                 name: 'Extra Repayment',
-                marker: { color: '#ff9500ff' }
+                marker: { color: '#ff9500ff' },
+                yaxis: 'y2'
+            },
+            {
+                x: sliceIndices,
+                y: offsetTopUps,
+                type: 'bar',
+                name: 'Offset Top-Up',
+                marker: { color: '#09c03aff' },
+                yaxis: 'y2'
             }
+
         ];
 
         const layout = {
@@ -65,7 +101,14 @@ export function LoanSimulationPlotlyRender({ slices, onSliceSelect }) {
                 dtick: 12
             },
             yaxis: {
-                title: 'Balance ($)',
+                title: 'Cumulative Balances ($)',
+                domain: [0.35, 1], // Top half
+                zeroline: false
+            },
+            yaxis2: {
+                title: 'Per-Slice Deltas ($)',
+                domain: [0, 0.3], // Bottom third
+                anchor: 'x',
                 zeroline: false
             },
             margin: { t: 40, l: 60, r: 30, b: 60 },

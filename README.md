@@ -12,6 +12,7 @@ src/
 │   ├── LoanTermsModel.js                   # Loan terms data model
 │   └── ParabolaModel.js                    # Domain model for y = ax² + bx + c
 ├── utils/
+│   ├── useImperativeModel.jsx              # Hook for imperative renderers inside React
 │   └── useStagedModel.js                   # Hook for staged editing of model props
 ├── views/
 │   ├── primitives/                         # Layout primitives and scaffolds
@@ -44,7 +45,7 @@ root/
 ├── package.json                            # Project manifest
 ├── package-lock.json                       # Dependency lockfile
 ├── README.md                               # Project overview and dev philosophy
-├── scrape-fm.ps1                          
+├── scrape-fm.ps1                           # Utility script (PowerShell)
 ```
 
 ## 🧠 Architectural Notes

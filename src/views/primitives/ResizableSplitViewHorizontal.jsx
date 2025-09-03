@@ -6,12 +6,13 @@ import styles from './ResizableSplitViewHorizontal.module.css';
 export function ResizableSplitViewHorizontal({ children }) {
     console.log('ResizableSplitViewHorizontal rendered');
 
-    const [sidebarWidth, setSidebarWidth] = useState(550);
+    const [sidebarWidth, setSidebarWidth] = useState(520);
     const isDragging = useRef(false);
 
     const handleMouseDown = () => {
         isDragging.current = true;
         document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
     };
 
     const handleMouseUp = () => {
@@ -20,11 +21,12 @@ export function ResizableSplitViewHorizontal({ children }) {
         }
         isDragging.current = false;
         document.body.style.cursor = 'default';
+        document.body.style.userSelect = 'auto';
     };
 
     const handleMouseMove = (e) => {
         if (!isDragging.current) return;
-        setSidebarWidth(Math.max(220, Math.min(e.clientX, window.innerWidth - 200)));
+        setSidebarWidth(Math.max(520, Math.min(e.clientX, window.innerWidth - 520)));
     };
 
     useEffect(() => {

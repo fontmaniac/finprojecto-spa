@@ -8,17 +8,23 @@ function createLoanSlice(index, values = {}) {
         sliceIndex: index,
 
         // Mutable fields
-        startLoanBalance:   values.startLoanBalance || 0,
-        startOffsetBalance: values.startOffsetBalance || 0,
-        repayment:          values.repayment || 0,
-        extraRepayment:     values.extraRepayment || 0,
-        offsetTopUp:        values.offsetTopUp || 0,
-        periodInterestRate: values.periodInterestRate || 0,
+        startLoanBalance:       values.startLoanBalance || 0,
+        startOffsetBalance:     values.startOffsetBalance || 0,
+        repayment:              values.repayment || 0,
+        extraRepayment:         values.extraRepayment || 0,
+        offsetTopUp:            values.offsetTopUp || 0,
+        annualInterestRate:     values.annualInterestRate || 0,
+        paymentFreqUnit:        values.paymentFreqUnit || 'month',
+        totalRepaymentsAtStart: values.totalRepaymentsAtStart || 0,
+        totalInterestAtStart:   values.totalInterestAtStart || 0,
 
         // Derived fields (computed later)
+        periodInterestRate: null,
         interestCharged: null,
         endLoanBalance: null,
         endOffsetBalance: null,
+        totalRepaymentsAtEnd: null,
+        totalInterestAtEnd: null,
 
         // Optional metadata
         isModified: false
@@ -71,16 +77,14 @@ function generateZeroSlice(terms) {
         offsetTopUpAmount
     } = terms;
 
-    const frequencyPerYear = PeriodUnit[paymentFreqUnit].perYear;
-    const periodInterestRate = annualInterestRate / frequencyPerYear;
-
     return createLoanSlice(0, {
         startLoanBalance: principalAmount,
         startOffsetBalance: initialOffsetAmount,
         repayment: paymentAmount,
         extraRepayment: extraRepaymentAmount,
         offsetTopUp: offsetTopUpAmount,
-        periodInterestRate: periodInterestRate
+        annualInterestRate: annualInterestRate,
+        paymentFreqUnit: paymentFreqUnit
     });
 }
 
@@ -91,19 +95,33 @@ function generateNextSlice(last) {
         repayment: last.repayment,
         extraRepayment: last.extraRepayment,
         offsetTopUp: last.offsetTopUp,
-        periodInterestRate: last.periodInterestRate
+        annualInterestRate: last.annualInterestRate,
+        paymentFreqUnit: last.paymentFreqUnit,
+        totalRepaymentsAtStart: last.totalRepaymentsAtEnd,
+        totalInterestAtStart: last.totalInterestAtEnd
     });
 } 
 
-function completeSlice(slice) {
-    const interestCharged = Math.max(slice.startLoanBalance - Math.max(slice.startOffsetBalance, 0), 0) * slice.periodInterestRate;
-    const endLoanBalance = slice.startLoanBalance + interestCharged - slice.repayment - slice.extraRepayment;
+export function completeSlice(slice) {
+    const frequencyPerYear = PeriodUnit[slice.paymentFreqUnit].perYear;
+    const periodInterestRate = slice.annualInterestRate / frequencyPerYear;
+
+    const interestCharged = Math.max(slice.startLoanBalance - Math.max(slice.startOffsetBalance, 0), 0) * periodInterestRate;
+    const repayment = (slice.repayment + slice.extraRepayment);
+    const endLoanBalance = slice.startLoanBalance + interestCharged - repayment;
     const endOffsetBalance = slice.startOffsetBalance + slice.offsetTopUp;
+
+    const totalRepaymentsAtEnd = slice.totalRepaymentsAtStart + repayment;
+    const totalInterestAtEnd = slice.totalInterestAtStart + interestCharged;
+
     return {
         ...slice, 
+        periodInterestRate: periodInterestRate,
         interestCharged: interestCharged,
         endLoanBalance: endLoanBalance,
-        endOffsetBalance: endOffsetBalance
+        endOffsetBalance: endOffsetBalance,
+        totalRepaymentsAtEnd: totalRepaymentsAtEnd,
+        totalInterestAtEnd: totalInterestAtEnd
     }
 }
 

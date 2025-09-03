@@ -12,6 +12,7 @@ export function useStagedModel(initialModel) {
     }, [initialModel]);
 
     const update = (key, value) => {
+        console.log('useStagedModel: update called with', key, value);
         setStaged(prev => {
             const next = { ...prev, [key]: value };
             setIsDirty(true);

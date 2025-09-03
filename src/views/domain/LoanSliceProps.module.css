@@ -2,7 +2,7 @@
 
 .loan-slice-grid {
     display: grid;
-    grid-template-columns: 180px 20px 1fr;
+    grid-template-columns: 180px 20px 140px 120px;
     gap: 0.5rem 0.25rem;
     align-items: center;
     padding: 1rem;
@@ -17,14 +17,16 @@
     white-space: nowrap;
 }
 
-.loan-slice-grid input[type="number"] {
+.loan-slice-grid input[type="number"],
+.loan-slice-grid select {
     width: 100%;
     padding: 0.25rem 0.5rem;
     font-size: 0.95rem;
     box-sizing: border-box;
 }
 
-.loan-slice-grid input[readonly] {
+.loan-slice-grid input[readonly]
+{
     background-color: #f5f5f5;
     color: #555;
     border: 1px solid #ccc;
@@ -60,4 +62,13 @@
     margin: 0;
     display: flex;
     align-items: center;
+}
+
+.derived-field {
+    background-color: transparent;
+    transition: background-color 30s ease;
+}
+
+.highlight {
+    background-color: #ffeaa7;    /* soft yellow */
 }

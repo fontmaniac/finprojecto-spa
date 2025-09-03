@@ -2,16 +2,14 @@
 
 import React from 'react';
 import { useStagedModel } from '../../utils/useStagedModel';
-import { PeriodUnit } from '../../models/Definitions';
 import styles from './LoanTermsProps.module.css';
+import { FrequencyDropDown } from './FrequencyDropDown';
 
 export function LoanTermsProps({ initialTerms, onCalculate }) {
     console.log('LoanTermsProps rendered with terms ', initialTerms);
 
     const { staged, update, commit } = useStagedModel(initialTerms);
     const terms = staged;
-
-    const units = Object.entries(PeriodUnit);
 
     const isReadOnly = (field) => terms.fieldToCalculate === field;
 
@@ -59,14 +57,7 @@ export function LoanTermsProps({ initialTerms, onCalculate }) {
                 onChange={(e) => updateField('paymentAmount', +e.target.value)}
                 readOnly={isReadOnly('paymentAmount')}
             />
-            <select
-                value={terms.paymentFreqUnit}
-                onChange={(e) => updateField('paymentFreqUnit', e.target.value)}
-            >
-                {units.map(([key, u]) => (
-                    <option key={key} value={key}>{u.freqLabel}</option>
-                ))}
-            </select>
+            <FrequencyDropDown value={terms.paymentFreqUnit} disabled={false} onChange={(e) => updateField('paymentFreqUnit', e.target.value)} />
 
             {/* Interest Rate */}
             <label>Annual Percent Rate:</label>
@@ -93,14 +84,7 @@ export function LoanTermsProps({ initialTerms, onCalculate }) {
                 onChange={(e) => updateField('termLength', +e.target.value)}
                 readOnly={isReadOnly('termLength')}
             />
-            <select
-                value={terms.termLengthUnit}
-                onChange={(e) => updateField('termLengthUnit', e.target.value)}
-            >
-                {units.map(([key, u]) => (
-                    <option key={key} value={key}>{u.plural}</option>
-                ))}
-            </select>
+            <FrequencyDropDown value={terms.termLengthUnit} labelProp={'plural'} disabled={false} onChange={(e) => updateField('termLengthUnit', e.target.value)} />
 
             {/* Normalized Term */}
             <label>Term Length (Norm):</label>
@@ -135,7 +119,7 @@ export function LoanTermsProps({ initialTerms, onCalculate }) {
                 value={terms.offsetTopUpAmount ?? ''}
                 onChange={(e) => updateField('offsetTopUpAmount', +e.target.value)}
             />
-            <div />
+            <FrequencyDropDown disabled={true} value={terms.paymentFreqUnit} />
 
             {/* Regular Extra Repayments:*/}
             <label>Extra Repayment:</label>
@@ -146,7 +130,7 @@ export function LoanTermsProps({ initialTerms, onCalculate }) {
                 value={terms.extraRepaymentAmount ?? ''}
                 onChange={(e) => updateField('extraRepaymentAmount', +e.target.value)}
             />
-            <div />
+            <FrequencyDropDown disabled={true} value={terms.paymentFreqUnit} />
 
             {/* Calculate Button */}
             <div /> 
