@@ -36,41 +36,6 @@ function createLoanSlice(index, values = {}) {
     };
 }
 
-// // Slice Mutation "class"
-// function createSliceMutation(sliceIndex, fieldName, value) {
-//     return {
-//         sliceIndex,
-//         fieldName,
-//         value
-//     };
-// }
-
-// // Loan Simulation "class" declaration.
-// function createLoanSimulation(slices = []) {
-//     return {
-//         slices,
-
-//         // mutation: SliceMutation
-//         modify: function (mutation) {
-//             const updatedSlices = this.slices.map((slice, index) => {
-//                 const applicable = mutation.sliceIndex <= index;
-//                 if (!applicable) return slice;
-
-//                 const newSlice = { ...slice };
-//                 if (mutation.fieldName in newSlice) {
-//                     newSlice[mutation.fieldName] = mutation.value;
-//                     newSlice.isModified = true;
-//                 };
-
-//                 return newSlice;
-//             });
-
-//             // Optionally recompute derived fields here
-//             return createLoanSimulation(updatedSlices);
-//         }
-//     };
-// }
-
 function generateZeroSlice(terms) {
     const {
         principalAmount,
@@ -153,6 +118,26 @@ export function generateLoanSimulation(terms) {
 
     return slices.reverse();
 }
+
+export function updateLoanSimulation(terms, oldSlices, updatedSlice) {
+    console.log('updateLoanSimulation, terms', terms, 'updatedSlice', updatedSlice);
+    const slices = [];
+    let sliceIdx = 0;
+    do {
+        if (sliceIdx < updatedSlice.sliceIndex) {
+            slices.unshift(oldSlices[sliceIdx]);
+        } else if (sliceIdx == updatedSlice.sliceIndex) {
+            slices.unshift(updatedSlice);
+        } else {
+            slices[0] = completeSlice(slices[0], terms);
+            slices.unshift(generateNextSlice(slices[0]));
+        }
+        sliceIdx++;
+    } while (slices[0].startLoanBalance > 0 && !shouldTerminateSimulation(slices))
+
+    return slices.reverse();
+}
+
 
 export function extractLoanSimulationOutcome(slices, paymentFreqUnit) {
     let totalRepayments = 0;

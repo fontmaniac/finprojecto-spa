@@ -8,7 +8,12 @@ import { Layout } from './views/primitives/Layout';
 import { makeDefaultLoanTerms, computeLoanTerms } from './models/LoanTermsModel.js';
 import { LoanTermsProps } from './views/domain/LoanTermsProps.jsx';
 import { LoanSimulationPlotlyRender } from './views/domain/LoanSimulationPlotlyRender.jsx';
-import { generateLoanSimulation, extractLoanSimulationOutcome, completeSlice as completeSliceWithTerms } from './models/LoanSimulationModel.js';
+import { 
+  generateLoanSimulation, 
+  updateLoanSimulation,
+  extractLoanSimulationOutcome, 
+  completeSlice as completeSliceWithTerms,
+} from './models/LoanSimulationModel.js';
 import { LoanSimulationOutcomeProps } from './views/domain/LoanSimulationOutcomeProps.jsx';
 import { LoanSliceProps } from './views/domain/LoanSliceProps.jsx';
 
@@ -44,6 +49,18 @@ function App() {
 
   const completeSlice = (slice) => completeSliceWithTerms(slice, loanTerms);
 
+  const handleSliceUpdate = (sliceIdx, sliceProps) => {
+    console.log('Loan Slice ', sliceIdx, ' updated w/props ', sliceProps);
+    const originalSlice = loanSimulation[sliceIdx]; 
+    const updatedSlice = { ...originalSlice, ...sliceProps };
+    const simulation = updateLoanSimulation(loanTerms, loanSimulation, updatedSlice);
+    setLoanSimulation(simulation);
+    setLoanSimulationOutcome(extractLoanSimulationOutcome(simulation, loanTerms.paymentFreqUnit))
+    setLoanSlice(simulation[sliceIdx]);
+    setRefreshKey(prev => prev + 1); // triggers re-render in MainView
+  };
+
+
   return (
     <ResizableSplitViewHorizontal>
       <Layout.Sidebar width="100%">
@@ -56,9 +73,7 @@ function App() {
           {loanSlice && (
             <LoanSliceProps
               slice={loanSlice}
-              onUpdate={(idx, props) => {
-                console.log('Loan Slice ', idx, ' updated w/props ', props);
-              }}
+              onUpdate={handleSliceUpdate}
               onIndexChange={handleSliceSelect}
               completeSlice={completeSlice}
             />

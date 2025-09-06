@@ -14,13 +14,13 @@ function Highlightable({ value, className }) {
         if (value !== prevRef.current) {
             prevRef.current = value;
 
-            flushSync(() => {
+            Promise.resolve().then(() => {
                 setPhase(1); // snap to yellow
-            });
 
-            requestAnimationFrame(() => {
-                setPhase(2); // fade to transparent
-                setTimeout(() => setPhase(0), 2000); // cleanup
+                requestAnimationFrame(() => {
+                    setPhase(2); // fade to transparent
+                    setTimeout(() => setPhase(0), 2000); // cleanup
+                });
             });
         }
     }, [value]);
@@ -58,7 +58,6 @@ export function LoanSliceProps({ slice, onUpdate, onIndexChange, completeSlice }
     const handleUpdate = () => {
         const updated = commit();
         onUpdate(updated.sliceIndex, {
-            repayment: updated.repayment,
             extraRepayment: updated.extraRepayment,
             offsetTopUp: updated.offsetTopUp,
             annualInterestRate: updated.annualInterestRate
@@ -67,7 +66,7 @@ export function LoanSliceProps({ slice, onUpdate, onIndexChange, completeSlice }
     };
 
     const isReadOnly = (field) =>
-        !['repayment', 'extraRepayment', 'offsetTopUp', 'annualInterestRate'].includes(field);
+        !['extraRepayment', 'offsetTopUp', 'annualInterestRate'].includes(field);
 
     const formatter = new Intl.NumberFormat('en-US', {
         maximumFractionDigits: 0,
