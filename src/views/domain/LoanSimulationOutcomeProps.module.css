@@ -2,7 +2,7 @@
 
 .loan-outcome-grid {
     display: grid;
-    grid-template-columns: 180px 20px 260px;
+    grid-template-columns: 180px 20px 1fr;
     gap: 0.5rem 0.25rem;
     align-items: center;
     padding: 1rem;

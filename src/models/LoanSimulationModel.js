@@ -125,10 +125,13 @@ export function updateLoanSimulation(terms, oldSlices, updatedSlice) {
     let sliceIdx = 0;
     do {
         if (sliceIdx < updatedSlice.sliceIndex) {
+            // Old slices already computed and completed
             slices.unshift(oldSlices[sliceIdx]);
         } else if (sliceIdx == updatedSlice.sliceIndex) {
-            slices.unshift(updatedSlice);
+            // Updated slice is not yet completed, but will be on next iteration
+            slices.unshift({...updatedSlice, isModified: true});
         } else {
+            // We are past the updated slice index. Compute as for original generation.
             slices[0] = completeSlice(slices[0], terms);
             slices.unshift(generateNextSlice(slices[0]));
         }

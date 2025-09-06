@@ -8,7 +8,7 @@ import styles from './LoanSimulationPlotlyRender.module.css';
 export function LoanSimulationPlotlyRender({ slices, selectedSliceIdx, onSliceSelect }) {
     console.log('LoanSimulationPlotlyRender called');
 
-    function applyFlashingHighlightImpl() {
+    function applyFlashingHighlightImpl(plotRef) {
         if (!plotRef.current) return;
 
         const forTraceGroupPaths = (traceGroup, doThis) => {
@@ -34,10 +34,10 @@ export function LoanSimulationPlotlyRender({ slices, selectedSliceIdx, onSliceSe
         if (highlightB) forTraceGroupPaths(highlightB, (path) => path.classList.add(styles['flashing-highlight']));
     }
 
-    function applyFlashingHighlight() { 
+    function applyFlashingHighlight(plotRef) { 
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
-                applyFlashingHighlightImpl();
+                applyFlashingHighlightImpl(plotRef);
             })    
         })
     };
@@ -65,6 +65,31 @@ export function LoanSimulationPlotlyRender({ slices, selectedSliceIdx, onSliceSe
 
         const sliceIndices = slices.map(slice => slice.sliceIndex);
 
+        const modMarks = slices.filter(slice => slice.isModified).map(slice => slice.sliceIndex);
+        const interestRates = slices.map(slice => slice.annualInterestRate);
+
+        const makeModMarkTrace = (modMarks, maxDomain, yaxis, shape = 'diamond') => {
+            const maxY = Math.max(...maxDomain);
+            const yValues = modMarks.map(() => maxY * 1.05); // Slightly above max
+
+            return {
+                x: modMarks,
+                y: yValues,
+                mode: 'markers',
+                type: 'scatter',
+                marker: {
+                    symbol: shape === 'diamond' ? 'diamond' : 'circle',
+                    size: 10,
+                    color: 'red'
+                },
+                yaxis: yaxis,
+                hoverinfo: 'skip',
+                name: 'Modified Slice Mark',
+                showlegend: false
+            };
+        };
+
+
         // Attention: The following is shared between Domain A and Domain B, as both consist of exactly four value-traces.
         // If this symmetry is broken, each domain needs its own definitions to maintain a consistent layout.
         const barWidth = 0.225;
@@ -73,21 +98,48 @@ export function LoanSimulationPlotlyRender({ slices, selectedSliceIdx, onSliceSe
         const bargap = null;
         const bargroupgap = null;
 
-        const makeInteractionTrace = (maxDomain, yaxis) => { return {
-            x: sliceIndices,
-            y: maxDomain,
-            offset: -0.5,
-            customdata: sliceIndices,
-            type: 'bar',
-            name: 'Click Capture Overlay',
-            marker: { color: 'rgba(0,0,0,0)' },
-            opacity: 0,
-            hoverinfo: 'text',
-            hovertext: sliceIndices.map(i => `Slice ${i}: Click to inspect`),
-            width: interactivityBarWidth,
-            yaxis: yaxis,
-            showlegend: false
-        }};
+        const makeInteractionTrace = (maxDomain, yaxis) => { 
+            function makeTooltip(slice) {
+                const pad = (label, width = 22) => label.padEnd(width, ' ');
+                const fmt = (num, decimals = 2) => typeof num === 'number' ? num.toFixed(decimals) : '—';
+                const fmtRate = (rate) => typeof rate === 'number' ? `${(rate * 100).toFixed(2)}%` : '—';
+                const fmtInt = (num) => typeof num === 'number' ? Math.round(num).toLocaleString() : '—';
+                const arrow = (start, end) => `${fmtInt(start)} -> ${fmtInt(end)}`;
+
+                return [
+                    `Slice ${fmtInt(slice?.sliceIndex)}`,
+                    '------------------------------',
+                    `${pad('Interest:')}${fmt(slice?.interestCharged)} (@${fmtRate(slice?.annualInterestRate)} annually)`,
+                    `${pad('Nominal Repayment:')}${fmt(slice?.repayment)}`,
+                    `${pad('Extra Repayment:')}${fmt(slice?.extraRepayment)}`,
+                    `${pad('Offset Top Up:')}${fmt(slice?.offsetTopUp)}`,
+                    '------------------------------',
+                    `${pad('Balance:')}${arrow(slice?.startLoanBalance, slice?.endLoanBalance)}`,
+                    `${pad('Offset:')}${arrow(slice?.startOffsetBalance, slice?.endOffsetBalance)}`,
+                    `${pad('Total Repayment:')}${arrow(slice?.totalRepaymentsAtStart, slice?.totalRepaymentsAtEnd)}`,
+                    `${pad('Total Interest:')}${arrow(slice?.totalInterestAtStart, slice?.totalInterestAtEnd)}`,
+                    '------------------------------',
+                    'Click to Inspect'
+                ].join('<br>');
+            }
+
+            return {
+                x: sliceIndices,
+                y: maxDomain,
+                offset: -0.5,
+                customdata: slices,
+                type: 'bar',
+                name: 'Click Capture Overlay',
+                marker: { color: 'rgba(0,0,0,0)' },
+                opacity: 0,
+                text: slices.map(s => makeTooltip(s)),
+                hoverinfo: 'text',
+                hovertemplate: '%{text}<extra></extra>',
+                width: interactivityBarWidth,
+                yaxis: yaxis,
+                showlegend: false
+            };
+        };
 
         const makeHighlightTrace = (maxDomain, yaxis) => { 
             const maxY = Math.max(...maxDomain);
@@ -111,103 +163,67 @@ export function LoanSimulationPlotlyRender({ slices, selectedSliceIdx, onSliceSe
         const interactionTraceB = makeInteractionTrace(maxDomainB, 'y2');
         const highlightTraceB = makeHighlightTrace(maxDomainB, 'y2');
 
+        const makeValueTrace = (y, offset, name, color, yaxis) => {
+            return {
+                x: sliceIndices,
+                y: y,
+                offset: offset,
+                type: 'bar',
+                name: name,
+                marker: { color: color },
+                width: barWidth,
+                yaxis: yaxis,
+                hoverinfo: 'skip'
+            };
+        };
+
+        const modMarkTrace = makeModMarkTrace(modMarks, maxDomainB, 'y2', 'diamond');
+
+        const interestRateTrace = {
+            x: sliceIndices,
+            y: interestRates,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Interest Rate',
+            line: {
+                color: '#ff0000',
+                width: 2
+            },
+            marker: {
+                size: 4,
+                color: '#ff0000'
+            },
+            yaxis: 'y3',
+            hoverinfo: 'skip'
+        };
+
+
         const data = [
             highlightTraceA,
             interactionTraceA,
-            {
-                x: sliceIndices,
-                y: loanBalances,
-                offset: -0.45,
-                type: 'bar',
-                name: 'Start Loan Balance',
-                marker: { color: 'rgba(245, 58, 16, 0.7)' },
-                width: barWidth,
-                yaxis: 'y',
-                hoverinfo: 'skip'
-            },
-            {
-                x: sliceIndices,
-                y: offsetBalances,
-                offset: -0.225,
-                type: 'bar',
-                name: 'Start Offset Balance',
-                marker: { color: 'rgba(6, 246, 98, 0.7)' },
-                width: barWidth,
-                yaxis: 'y',
-                hoverinfo: 'skip'
-            },
-            {
-                x: sliceIndices,
-                y: totalRepaymentsToDate,
-                offset: +0,
-                type: 'bar',
-                name: 'Total Repayments To Date',
-                marker: { color: 'rgba(201, 12, 62, 0.7)' },
-                width: barWidth,
-                yaxis: 'y',
-                hoverinfo: 'skip'
-            },
-            {
-                x: sliceIndices,
-                y: totalInterestToDate,
-                offset: +0.225,
-                type: 'bar',
-                name: 'Total Interest To Date',
-                marker: { color: 'rgba(246, 6, 238, 0.7)' },
-                width: barWidth,
-                yaxis: 'y',
-                hoverinfo: 'skip'
-            },
+            makeValueTrace(loanBalances, -0.45, 'Start Loan Balance', 'rgba(245, 58, 16, 0.7)', 'y'),
+            makeValueTrace(offsetBalances, -0.225, 'Start Offset Balance', 'rgba(6, 246, 98, 0.7)', 'y'),
+            makeValueTrace(totalRepaymentsToDate, 0.0, 'Total Repayments To Date', 'rgba(201, 12, 62, 0.7)', 'y'),
+            makeValueTrace(totalInterestToDate, +0.225, 'Total Interest To Date', 'rgba(246, 6, 238, 0.7)', 'y'),
             highlightTraceB,
             interactionTraceB,
-            {
-                x: sliceIndices,
-                y: interestCharges,
-                offset: -0.45,
-                type: 'bar',
-                name: 'Interest Charged',
-                marker: { color: 'rgba(83, 21, 216, 0.7)' },
-                width: barWidth,
-                yaxis: 'y2',
-                hoverinfo: 'skip'
-            },
-            {
-                x: sliceIndices,
-                y: repayments,
-                offset: -0.225,
-                type: 'bar',
-                name: 'Repayment',
-                marker: { color: '#ffff00' },
-                width: barWidth,
-                yaxis: 'y2',
-                hoverinfo: 'skip'
-            },
-            {
-                x: sliceIndices,
-                y: extraRepayments,
-                offset: 0.0,
-                type: 'bar',
-                name: 'Extra Repayment',
-                marker: { color: '#ff9500ff' },
-                width: barWidth,
-                yaxis: 'y2',
-                hoverinfo: 'skip'
-            },
-            {
-                x: sliceIndices,
-                y: offsetTopUps,
-                offset: +0.225,
-                type: 'bar',
-                name: 'Offset Top-Up',
-                marker: { color: '#09c03aff' },
-                width: barWidth,
-                yaxis: 'y2',
-                hoverinfo: 'skip'
-            }
+            modMarkTrace,
+            makeValueTrace(interestCharges, -0.45, 'Interest Charged', 'rgba(83, 21, 216, 0.7)', 'y2'),
+            makeValueTrace(repayments, -0.225, 'Repayment', '#ffff00', 'y2'),
+            makeValueTrace(extraRepayments, 0.0, 'Extra Repayment', '#ff9500ff', 'y2'),
+            makeValueTrace(offsetTopUps, 0.225, 'Offset Top-Up', '#168634ff', 'y2'),
+            interestRateTrace
         ];
 
         const layout = {
             title: 'Loan Simulation Slices',
+            hoverlabel: {
+                font: {
+                    family: 'Courier New, monospace',
+                    size: 12,
+                    color: '#ffffff'
+                }
+            },
             barmode: 'group',
             bargap: bargap,
             bargroupgap: bargroupgap,
@@ -228,6 +244,14 @@ export function LoanSimulationPlotlyRender({ slices, selectedSliceIdx, onSliceSe
                 anchor: 'x',
                 zeroline: false
             },
+            yaxis3: {
+                title: 'Annual Interest Rate (%)',
+                overlaying: 'y2',
+                side: 'right',
+                showgrid: false,
+                zeroline: false,
+                tickformat: '.1f'
+            },            
             margin: { t: 40, l: 60, r: 30, b: 60 },
             hovermode: 'closest',
             dragmode: 'zoom',
@@ -245,15 +269,15 @@ export function LoanSimulationPlotlyRender({ slices, selectedSliceIdx, onSliceSe
             const point = event.points?.[0];
             if (!point) return;
 
-            const sliceIndex = point.customdata;
-            if (sliceIndex === null && sliceIndex === undefined) return;
-            onSliceSelect(sliceIndex);
+            const slice = point.customdata;
+            if (slice === null && slice === undefined) return;
+            onSliceSelect(slice.sliceIndex);
         };
 
         Plotly.newPlot(plotRef.current, data, layout, config).then((plotlyInstance) => {
             plotlyInstance.on('plotly_click', handleClick);
 
-            if (selectedSliceIdx != null && selectedSliceIdx != undefined) applyFlashingHighlight();
+            if (selectedSliceIdx != null && selectedSliceIdx != undefined) applyFlashingHighlight(plotRef);
         });
     };
 
@@ -282,7 +306,7 @@ export function LoanSimulationPlotlyRender({ slices, selectedSliceIdx, onSliceSe
             y: [[maxYB]]
         }, [6]);
 
-        applyFlashingHighlight();        
+        applyFlashingHighlight(plotRef);        
     }, [selectedSliceIdx, slices]);
 
     useEffect(() => {

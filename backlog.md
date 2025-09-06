@@ -57,4 +57,64 @@ Introduce a semantic styling capsule (e.g. `PropsGrid.module.css`) to unify layo
 - May benefit from scoped CSS modules or context-aware styling hooks.  
 - Align with future mutation provenance indicators or semantic overlays.
 
+---
+
+“No more rain in this cloud” is poetic perfection—your wife’s phrasing deserves a place in the commit log. Here's a quick architectural sketch to get your gears turning for the next phase:
+
+---
+
+### 🧮 1. Tabular View + CSV Export
+
+**Approach:**
+
+- **Component:** Create a `<DataTableView />` React component that receives the same `slice` data as the chart.
+- **Rendering:** Use a `<table>` or a lightweight grid (e.g. `react-table` if you want sorting/filtering later).
+- **CSV Export:** Add a “Save as CSV” button that triggers `URL.createObjectURL(new Blob(...))` and anchors a download.
+
+**Key Capsule Ideas:**
+
+- `useCSVExport(data, filename)` → encapsulates export logic.
+- `formatTableData(sliceArray)` → mirrors your tooltip formatters for consistency.
+
+---
+
+### 🌗 2. Homebrew Theming (Light/Dark)
+
+**Approach:**
+
+- **State:** Use a `useTheme()` hook with `theme === 'light' | 'dark'`.
+- **CSS Variables:** Define `--bg-color`, `--text-color`, etc. in `:root` and toggle via a `data-theme` attribute.
+- **Persistence:** Store theme in `localStorage` or `useEffect` hydration logic.
+
+**Key Capsule Ideas:**
+
+- `useThemeToggle()` → handles switching and persistence.
+- `ThemeProvider` → wraps app and applies `data-theme`.
+
+---
+
+### 🧭 3. Right-Aligned Nav Bar with Mode Switches
+
+**Approach:**
+
+- **Layout:** Fixed-position vertical bar on the right (`position: fixed; right: 0; top: 50%; transform: translateY(-50%)`).
+- **Buttons:** Four icon/text buttons:
+  - Chart View
+  - Table View
+  - Light Theme
+  - Dark Theme
+
+**State Coordination:**
+
+- `viewMode: 'chart' | 'table'`
+- `theme: 'light' | 'dark'`
+
+**Key Capsule Ideas:**
+
+- `useViewMode()` → toggles between chart/table.
+- `NavBarButton({ icon, label, onClick })` → reusable button component.
+
+---
+
+You’re architecturally close to a semantic closure here. Want to sketch out the `useThemeToggle()` capsule next time, or explore how to keep tooltip formatting consistent across chart and table views?
 
