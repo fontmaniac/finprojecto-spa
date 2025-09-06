@@ -11,13 +11,23 @@ export function useStagedModel(initialModel) {
         setIsDirty(false);
     }, [initialModel]);
 
-    const update = (key, value) => {
-        console.log('useStagedModel: update called with', key, value);
+    const updateKey = (key, value) => {
+        console.log('useStagedModel: updateKey called with', key, value);
         setStaged(prev => {
             const next = { ...prev, [key]: value };
             setIsDirty(true);
             return next;
         });
+    };
+
+    const updateAll = (update) => {
+        console.log('useStagedModel: updateAll called');
+        setStaged(prev => {
+            const next = update(prev);
+            setIsDirty(true);
+            return next;
+        });
+
     };
 
     const commit = () => staged;
@@ -27,5 +37,5 @@ export function useStagedModel(initialModel) {
         setIsDirty(false);
     };
 
-    return { staged, update, commit, reset, isDirty };
+    return { staged, updateKey, updateAll, commit, reset, isDirty };
 }

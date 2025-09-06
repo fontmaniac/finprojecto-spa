@@ -28,7 +28,7 @@ export function makeDefaultLoanTerms() {
         termLengthUnit: 'year',
         termLengthNorm: undefined,
         fieldToCalculate: 'paymentAmount',
-        initialOffsetAmount: 0,
+        initialOffsetAmount: 150000,
         extraRepaymentAmount: 0,
         offsetTopUpAmount: 0
     };

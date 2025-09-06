@@ -1,0 +1,9 @@
+@keyframes flashHighlight {
+  0%   { fill: #bbbbbb; }
+  50%  { fill: #777777; }
+  100% { fill: #cccccc; }
+}
+
+.flashing-highlight {
+  animation: flashHighlight 2.5s infinite;
+}

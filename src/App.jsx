@@ -94,7 +94,10 @@ function App() {
       </Layout.Sidebar>
       <Layout.MainArea>
         <MainView trigger={refreshKey} >
-          <LoanSimulationPlotlyRender slices={loanSimulation} onSliceSelect={handleSliceSelect}/>
+          <LoanSimulationPlotlyRender 
+            slices={loanSimulation} 
+            selectedSliceIdx={loanSlice?.sliceIndex}
+            onSliceSelect={handleSliceSelect}/>
         </MainView>
       </Layout.MainArea>
     </ResizableSplitViewHorizontal>

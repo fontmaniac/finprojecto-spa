@@ -8,17 +8,17 @@ import { FrequencyDropDown } from './FrequencyDropDown';
 export function LoanTermsProps({ initialTerms, onCalculate }) {
     console.log('LoanTermsProps rendered with terms ', initialTerms);
 
-    const { staged, update, commit } = useStagedModel(initialTerms);
+    const { staged, updateKey, commit } = useStagedModel(initialTerms);
     const terms = staged;
 
     const isReadOnly = (field) => terms.fieldToCalculate === field;
 
     const updateField = (field, value) => {
-        update(field, value);
+        updateKey(field, value);
     };
 
     const selectFieldToCalculate = (field) => {
-        update('fieldToCalculate', field);
+        updateKey('fieldToCalculate', field);
     };
 
     const handleCalculate = () => {

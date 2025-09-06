@@ -64,11 +64,15 @@
     align-items: center;
 }
 
-.derived-field {
+.loan-slice-grid div {
     background-color: transparent;
-    transition: background-color 30s ease;
 }
 
-.highlight {
-    background-color: #ffeaa7;    /* soft yellow */
+.loan-slice-grid div.highlight-phase-1 {
+    background-color: #fff8c6;
+}
+
+.loan-slice-grid div.highlight-phase-2 {
+    background-color: transparent;
+    transition: background-color 2s ease;
 }

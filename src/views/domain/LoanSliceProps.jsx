@@ -1,38 +1,56 @@
 /* FM: Component for viewing/editing props of a Loan Slice using staged model */
 
 import React, { useState, useEffect, useRef } from 'react';
+import { flushSync } from 'react-dom';
 import { useStagedModel } from '../../utils/useStagedModel';
 import styles from './LoanSliceProps.module.css'; // optional styling
-import { PeriodUnit } from '../../models/Definitions';
 import { FrequencyDropDown as FrequencyDropDownImpl } from './FrequencyDropDown';
 
-export function LoanSliceProps({ slice, onUpdate, onIndexChange, completeSlice }) {
-    const { staged, update, commit, reset, isDirty } = useStagedModel(slice);
-    console.log('LoanSliceProps "staged" = ', staged);
-
-
-    const [derivedSlice, setDerivedSlice] = useState(staged);    
-    const changedFieldsRef = useRef(new Set());
+function Highlightable({ value }) {
+    const [phase, setPhase] = useState(0);
+    const prevRef = useRef(value);
 
     useEffect(() => {
-        console.log('useEffect: derivedSlice recompute commenced');
-        const newDerived = completeSlice(staged);
-        const changedFields = new Set();
+        if (value !== prevRef.current) {
+            prevRef.current = value;
 
-        for (const key of Object.keys(newDerived)) {
-            if (derivedSlice[key] !== newDerived[key]) {
-                changedFields.add(key);
-            }
+            flushSync(() => {
+                setPhase(1); // snap to yellow
+            });
+
+            requestAnimationFrame(() => {
+                setPhase(2); // fade to transparent
+                setTimeout(() => setPhase(0), 2000); // cleanup
+            });
         }
+    }, [value]);
 
-        changedFieldsRef.current = changedFields;
-        setDerivedSlice(newDerived);
-        console.log('useEffect: derivedSlice recomputed and set');
-    }, [staged]);
+    const getClass = (phase) => {
+        if (phase === 1) return styles['highlight-phase-1'];
+        if (phase === 2) return styles['highlight-phase-2'];
+        return '';
+    };
 
+    return (
+        <div className={getClass(phase)}>
+            {value}
+        </div>
+    );
+}
+
+
+export function LoanSliceProps({ slice, onUpdate, onIndexChange, completeSlice }) {
+    const { staged, updateAll, commit, reset, isDirty } = useStagedModel(slice);
+    console.log('LoanSliceProps "staged" = ', staged);
 
     const handleFieldChange = (field) => (e) => {
-        update(field, +e.target.value);
+        updateAll(prev => {
+            const updatedSlice = { ...prev, [field]: +e.target.value };
+            console.log('handleFieldChange, updatedSlice', updatedSlice);
+            const completedSlice = completeSlice(updatedSlice);
+            console.log('handleFieldChange, completedSlice', updatedSlice);
+            return completedSlice;
+        });
     };
 
     const handleUpdate = () => {
@@ -146,33 +164,33 @@ export function LoanSliceProps({ slice, onUpdate, onIndexChange, completeSlice }
 
             <label>Period Interest Rate:</label>
             <div />
-            <div>{staged.periodInterestRate.toFixed(4)}</div>
+            <Highlightable value={staged.periodInterestRate.toFixed(4)} />
             <FrequencyDropDown />
 
 
             <label>Interest Charged:</label>
             <div />
-            <div>{formatCurrency(derivedSlice.interestCharged) ?? '—'}</div>
+            <Highlightable value={formatCurrency(staged.interestCharged) ?? '—'} />
             <div />
 
             <label>End Loan Balance:</label>
             <div />
-            <div>{formatCurrency(derivedSlice.endLoanBalance) ?? '—'}</div>
+            <Highlightable value={formatCurrency(staged.endLoanBalance) ?? '—'} />
             <div />
 
             <label>End Offset Balance:</label>
             <div />
-            <div>{formatCurrency(derivedSlice.endOffsetBalance) ?? '—'}</div>
+            <Highlightable value={formatCurrency(staged.endOffsetBalance) ?? '—'} />
             <div />
 
             <label>Total Repayment (after):</label>
             <div />
-            <div>{formatCurrency(derivedSlice.totalRepaymentsAtEnd)}</div>
+            <Highlightable value={formatCurrency(staged.totalRepaymentsAtEnd)} />
             <div />
 
             <label>Total Interest (after):</label>
             <div />
-            <div>{formatCurrency(derivedSlice.totalInterestAtEnd)}</div>
+            <Highlightable value={formatCurrency(staged.totalInterestAtEnd)} />
             <div />
 
             <div />
