@@ -8,53 +8,74 @@ import styles from './LoanSimulationPlotlyRender.module.css';
 export function LoanSimulationPlotlyRender({ slices, selectedSliceIdx, onSliceSelect }) {
     console.log('LoanSimulationPlotlyRender called');
 
-    function applyFlashingHighlight() {
+    function applyFlashingHighlightImpl() {
         if (!plotRef.current) return;
 
-        const traceGroups = plotRef.current.querySelectorAll('.trace.bars');
-        traceGroups.forEach((traceGroup) => {
+        const forTraceGroupPaths = (traceGroup, doThis) => {
             const pointGroups = traceGroup.querySelectorAll('.point');
             pointGroups.forEach((pointGroup) => {
                 const path = pointGroup.querySelector('path');
-                if (path) path.classList.remove(styles['flashing-highlight']);
+                if (path) doThis(path);
             });
+        };
+
+        const traceGroups = plotRef.current.querySelectorAll('.trace.bars');
+        traceGroups.forEach((traceGroup) => {
+            forTraceGroupPaths(traceGroup, (path) => path.classList.remove(styles['flashing-highlight']));
         });
 
-        // Assuming highlight trace is the last one (or use index if known)
-        const highlightTraceGroup = traceGroups[0];
-        if (!highlightTraceGroup) return;
+        console.log('traceGroups', traceGroups);
 
-        const highlightPoints = highlightTraceGroup.querySelectorAll('.point');
-        highlightPoints.forEach((pointGroup) => {
-            const path = pointGroup.querySelector('path');
-            if (path) path.classList.add(styles['flashing-highlight']);
-        });
+        const highlightA = traceGroups[0];
+        console.log('highlightA', highlightA);
+        if (highlightA) forTraceGroupPaths(highlightA, (path) => path.classList.add(styles['flashing-highlight']));
+        const highlightB = traceGroups[6];
+        console.log('highlightB', highlightB);
+        if (highlightB) forTraceGroupPaths(highlightB, (path) => path.classList.add(styles['flashing-highlight']));
     }
+
+    function applyFlashingHighlight() { 
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                applyFlashingHighlightImpl();
+            })    
+        })
+    };
+
+
+    const calcMaxDomain = (arrays) => slices.map((_, i) =>
+        Math.max(...arrays.map(arr => arr[i])));
+
+    const loanBalances = slices.map(slice => slice.startLoanBalance);
+    const offsetBalances = slices.map(slice => slice.startOffsetBalance);
+    const totalRepaymentsToDate = slices.map(slice => slice.totalRepaymentsAtStart);
+    const totalInterestToDate = slices.map(slice => slice.totalInterestAtStart);
+
+    const maxDomainA = calcMaxDomain([loanBalances, offsetBalances, totalRepaymentsToDate, totalInterestToDate]);
+
+    const interestCharges = slices.map(slice => slice.interestCharged);
+    const repayments = slices.map(slice => slice.repayment);
+    const extraRepayments = slices.map(slice => slice.extraRepayment);
+    const offsetTopUps = slices.map(slice => slice.offsetTopUp);
+
+    const maxDomainB = calcMaxDomain([interestCharges, repayments, extraRepayments, offsetTopUps]);
 
     const render = (plotRef) => {
         if (!slices || slices.length === 0 || !plotRef.current) return;
 
         const sliceIndices = slices.map(slice => slice.sliceIndex);
 
-        const calcMaxDomain = (arrays) => slices.map((_, i) =>
-            Math.max(...arrays.map(arr => arr[i])));
-
-        const loanBalances = slices.map(slice => slice.startLoanBalance);
-        const offsetBalances = slices.map(slice => slice.startOffsetBalance);
-        const totalRepaymentsToDate = slices.map(slice => slice.totalRepaymentsAtStart);
-        const totalInterestToDate = slices.map(slice => slice.totalInterestAtStart);
-
-        const maxDomainA = calcMaxDomain([loanBalances, offsetBalances, totalRepaymentsToDate, totalInterestToDate]);
+        // Attention: The following is shared between Domain A and Domain B, as both consist of exactly four value-traces.
+        // If this symmetry is broken, each domain needs its own definitions to maintain a consistent layout.
         const barWidth = 0.225;
         const interactivityBarWidth = 1.0;
         const highlightBarWidth = 1.1;
         const bargap = null;
         const bargroupgap = null;
 
-
-        const interactionOverlayTrace = {
+        const makeInteractionTrace = (maxDomain, yaxis) => { return {
             x: sliceIndices,
-            y: maxDomainA,
+            y: maxDomain,
             offset: -0.5,
             customdata: sliceIndices,
             type: 'bar',
@@ -64,17 +85,35 @@ export function LoanSimulationPlotlyRender({ slices, selectedSliceIdx, onSliceSe
             hoverinfo: 'text',
             hovertext: sliceIndices.map(i => `Slice ${i}: Click to inspect`),
             width: interactivityBarWidth,
-            yaxis: 'y',
+            yaxis: yaxis,
             showlegend: false
+        }};
+
+        const makeHighlightTrace = (maxDomain, yaxis) => { 
+            const maxY = Math.max(...maxDomain);
+            return {
+                x: selectedSliceIdx != null ? [selectedSliceIdx] : [],
+                y: selectedSliceIdx != null ? [maxY] : [],
+                type: 'bar',
+                name: 'Selected Slice Highlight',
+                marker: { color: 'rgba(128,128,128,0.3)' },
+                width: highlightBarWidth,
+                yaxis: yaxis,
+                hoverinfo: 'skip',
+                showlegend: false,
+                customdata: ['fake-cursor']
+            };
         };
 
-        const interestCharges = slices.map(slice => slice.interestCharged);
-        const repayments = slices.map(slice => slice.repayment);
-        const extraRepayments = slices.map(slice => slice.extraRepayment);
-        const offsetTopUps = slices.map(slice => slice.offsetTopUp);
+        const interactionTraceA = makeInteractionTrace(maxDomainA, 'y');
+        const highlightTraceA = makeHighlightTrace(maxDomainA, 'y');
+
+        const interactionTraceB = makeInteractionTrace(maxDomainB, 'y2');
+        const highlightTraceB = makeHighlightTrace(maxDomainB, 'y2');
 
         const data = [
-            interactionOverlayTrace,
+            highlightTraceA,
+            interactionTraceA,
             {
                 x: sliceIndices,
                 y: loanBalances,
@@ -119,56 +158,53 @@ export function LoanSimulationPlotlyRender({ slices, selectedSliceIdx, onSliceSe
                 yaxis: 'y',
                 hoverinfo: 'skip'
             },
+            highlightTraceB,
+            interactionTraceB,
             {
                 x: sliceIndices,
                 y: interestCharges,
+                offset: -0.45,
                 type: 'bar',
                 name: 'Interest Charged',
                 marker: { color: 'rgba(83, 21, 216, 0.7)' },
-                yaxis: 'y2'
+                width: barWidth,
+                yaxis: 'y2',
+                hoverinfo: 'skip'
             },
             {
                 x: sliceIndices,
                 y: repayments,
+                offset: -0.225,
                 type: 'bar',
                 name: 'Repayment',
                 marker: { color: '#ffff00' },
-                yaxis: 'y2'
+                width: barWidth,
+                yaxis: 'y2',
+                hoverinfo: 'skip'
             },
             {
                 x: sliceIndices,
                 y: extraRepayments,
+                offset: 0.0,
                 type: 'bar',
                 name: 'Extra Repayment',
                 marker: { color: '#ff9500ff' },
-                yaxis: 'y2'
+                width: barWidth,
+                yaxis: 'y2',
+                hoverinfo: 'skip'
             },
             {
                 x: sliceIndices,
                 y: offsetTopUps,
+                offset: +0.225,
                 type: 'bar',
                 name: 'Offset Top-Up',
                 marker: { color: '#09c03aff' },
-                yaxis: 'y2'
+                width: barWidth,
+                yaxis: 'y2',
+                hoverinfo: 'skip'
             }
         ];
-
-        // Inject highlight trace
-        const maxY = Math.max(...maxDomainA);
-        const highlightTrace = {
-            x: selectedSliceIdx != null ? [selectedSliceIdx] : [],
-            y: selectedSliceIdx != null ? [maxY] : [],
-            type: 'bar',
-            name: 'Selected Slice Highlight',
-            marker: { color: 'rgba(128,128,128,0.3)' },
-            width: highlightBarWidth,
-            yaxis: 'y',
-            hoverinfo: 'skip',
-            showlegend: false,
-            customdata: ['fake-cursor']
-        };
-
-        data.unshift(highlightTrace);
 
         const layout = {
             title: 'Loan Simulation Slices',
@@ -217,7 +253,7 @@ export function LoanSimulationPlotlyRender({ slices, selectedSliceIdx, onSliceSe
         Plotly.newPlot(plotRef.current, data, layout, config).then((plotlyInstance) => {
             plotlyInstance.on('plotly_click', handleClick);
 
-            setTimeout(applyFlashingHighlight, 50);
+            if (selectedSliceIdx != null && selectedSliceIdx != undefined) applyFlashingHighlight();
         });
     };
 
@@ -232,23 +268,21 @@ export function LoanSimulationPlotlyRender({ slices, selectedSliceIdx, onSliceSe
     useEffect(() => {
         if (!plotRef.current || selectedSliceIdx == null) return;
 
-        const maxY = Math.max(
-            ...slices.map((_, i) =>
-                Math.max(
-                    slices[i].startLoanBalance,
-                    slices[i].startOffsetBalance,
-                    slices[i].totalRepaymentsAtStart,
-                    slices[i].totalInterestAtStart
-                )
-            )
-        );
+        const maxYA = Math.max(...maxDomainA);
 
         Plotly.restyle(plotRef.current, {
             x: [[selectedSliceIdx]],
-            y: [[maxY]]
+            y: [[maxYA]]
         }, [0]);
 
-        setTimeout(applyFlashingHighlight, 50);        
+        const maxYB = Math.max(...maxDomainB);
+
+        Plotly.restyle(plotRef.current, {
+            x: [[selectedSliceIdx]],
+            y: [[maxYB]]
+        }, [6]);
+
+        applyFlashingHighlight();        
     }, [selectedSliceIdx, slices]);
 
     useEffect(() => {
