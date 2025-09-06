@@ -1,6 +1,7 @@
 /* FM: Structures for simulating and representing the whole lifetime of the loan. */
 
 import { PeriodUnit, normaliseTermLength } from './Definitions.js';
+import { calculateTermPayment } from './LoanTermsModel.js';
 
 // Loan Slice "class"
 function createLoanSlice(index, values = {}) {
@@ -106,20 +107,27 @@ function generateNextSlice(last) {
     });
 } 
 
-export function completeSlice(slice) {
+export function completeSlice(slice, terms) {
     const frequencyPerYear = PeriodUnit[slice.paymentFreqUnit].perYear;
     const periodInterestRate = slice.annualInterestRate / frequencyPerYear;
 
+    const repayment = calculateTermPayment(
+        terms.principalAmount,
+        terms.paymentFreqUnit,
+        slice.annualInterestRate,
+        terms.termLengthNorm);
+
+    const fullRepayment = (repayment + slice.extraRepayment);
     const interestCharged = Math.max(slice.startLoanBalance - Math.max(slice.startOffsetBalance, 0), 0) * periodInterestRate;
-    const repayment = (slice.repayment + slice.extraRepayment);
-    const endLoanBalance = slice.startLoanBalance + interestCharged - repayment;
+    const endLoanBalance = slice.startLoanBalance + interestCharged - fullRepayment;
     const endOffsetBalance = slice.startOffsetBalance + slice.offsetTopUp;
 
-    const totalRepaymentsAtEnd = slice.totalRepaymentsAtStart + repayment;
+    const totalRepaymentsAtEnd = slice.totalRepaymentsAtStart + fullRepayment;
     const totalInterestAtEnd = slice.totalInterestAtStart + interestCharged;
 
     return {
         ...slice, 
+        repayment: repayment,
         periodInterestRate: periodInterestRate,
         interestCharged: interestCharged,
         endLoanBalance: endLoanBalance,
@@ -139,7 +147,7 @@ export function generateLoanSimulation(terms) {
     const slices = [zeroSlice];
     
     do {
-        slices[0] = completeSlice(slices[0]);
+        slices[0] = completeSlice(slices[0], terms);
         slices.unshift(generateNextSlice(slices[0]));
     } while (slices[0].startLoanBalance > 0 && !shouldTerminateSimulation(slices))
 

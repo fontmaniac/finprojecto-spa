@@ -8,7 +8,7 @@ import { Layout } from './views/primitives/Layout';
 import { makeDefaultLoanTerms, computeLoanTerms } from './models/LoanTermsModel.js';
 import { LoanTermsProps } from './views/domain/LoanTermsProps.jsx';
 import { LoanSimulationPlotlyRender } from './views/domain/LoanSimulationPlotlyRender.jsx';
-import { generateLoanSimulation, extractLoanSimulationOutcome, completeSlice } from './models/LoanSimulationModel.js';
+import { generateLoanSimulation, extractLoanSimulationOutcome, completeSlice as completeSliceWithTerms } from './models/LoanSimulationModel.js';
 import { LoanSimulationOutcomeProps } from './views/domain/LoanSimulationOutcomeProps.jsx';
 import { LoanSliceProps } from './views/domain/LoanSliceProps.jsx';
 
@@ -41,6 +41,8 @@ function App() {
     console.log('Captured slice selection w/idx ', sliceIndex, slice);
     setLoanSlice(slice);
   }, [loanSimulation]);
+
+  const completeSlice = (slice) => completeSliceWithTerms(slice, loanTerms);
 
   return (
     <ResizableSplitViewHorizontal>

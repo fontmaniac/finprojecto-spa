@@ -6,7 +6,7 @@ import { useStagedModel } from '../../utils/useStagedModel';
 import styles from './LoanSliceProps.module.css'; // optional styling
 import { FrequencyDropDown as FrequencyDropDownImpl } from './FrequencyDropDown';
 
-function Highlightable({ value }) {
+function Highlightable({ value, className }) {
     const [phase, setPhase] = useState(0);
     const prevRef = useRef(value);
 
@@ -31,8 +31,10 @@ function Highlightable({ value }) {
         return '';
     };
 
+    const combinedClassName = `${getClass(phase)} ${className || ''}`.trim();
+
     return (
-        <div className={getClass(phase)}>
+        <div className={combinedClassName}>
             {value}
         </div>
     );
@@ -117,13 +119,7 @@ export function LoanSliceProps({ slice, onUpdate, onIndexChange, completeSlice }
 
             <label>Repayment:</label>
             <div />
-            <input
-                type="number"
-                step="10"
-                value={staged.repayment}
-                onChange={handleFieldChange('repayment')}
-                readOnly={isReadOnly('repayment')}
-            />
+            <Highlightable value={staged.repayment.toFixed(2)} className={styles['red-bordered']}/>
             <FrequencyDropDown />
 
             <label>Extra Repayment:</label>

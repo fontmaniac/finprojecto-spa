@@ -76,3 +76,10 @@
     background-color: transparent;
     transition: background-color 2s ease;
 }
+
+.red-bordered {
+    border: 1px solid red;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
