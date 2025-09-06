@@ -1,6 +1,6 @@
 /* FM: Domain-specific input group for editing a single circle's properties (x, y, radius, key) */
 
-import { useStagedModel } from '../../utils/useStagedModel';
+import { useStagedModel } from '../../../utils/useStagedModel';
 import styles from './ParabolaInputs.module.css'; // Reuse existing styles
 
 export function CircleProps({ circleModel, onUpdate }) {

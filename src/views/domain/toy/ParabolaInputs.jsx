@@ -1,6 +1,6 @@
 /* FM: Domain-specific input group for parabola parameters (a, b, c) */
 
-import { useStagedModel } from '../../utils/useStagedModel';
+import { useStagedModel } from '../../../utils/useStagedModel';
 import styles from './ParabolaInputs.module.css';
 
 export function ParabolaInputs({ params, onInit }) {

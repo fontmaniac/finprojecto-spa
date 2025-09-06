@@ -7,18 +7,22 @@ function createLoanSlice(index, values = {}) {
     return {
         sliceIndex: index,
 
-        // Mutable fields
+        // Immutable fields
         startLoanBalance:       values.startLoanBalance || 0,
         startOffsetBalance:     values.startOffsetBalance || 0,
-        repayment:              values.repayment || 0,
-        extraRepayment:         values.extraRepayment || 0,
-        offsetTopUp:            values.offsetTopUp || 0,
-        annualInterestRate:     values.annualInterestRate || 0,
         paymentFreqUnit:        values.paymentFreqUnit || 'month',
         totalRepaymentsAtStart: values.totalRepaymentsAtStart || 0,
         totalInterestAtStart:   values.totalInterestAtStart || 0,
 
+        // Mutable fields
+        extraRepayment:         values.extraRepayment || 0,
+        offsetTopUp:            values.offsetTopUp || 0,
+        annualInterestRate:     values.annualInterestRate || 0,
+
+
+
         // Derived fields (computed later)
+        repayment:              values.repayment || 0,
         periodInterestRate: null,
         interestCharged: null,
         endLoanBalance: null,
