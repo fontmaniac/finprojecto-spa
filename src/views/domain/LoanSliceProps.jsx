@@ -159,7 +159,7 @@ export function LoanSliceProps({ slice, onUpdate, onIndexChange, completeSlice }
 
             <label>Period Interest Rate:</label>
             <div />
-            <Highlightable value={staged.periodInterestRate.toFixed(4)} />
+            <Highlightable value={staged.periodInterestRate?.toFixed(4) ?? '—'} />
             <FrequencyDropDown />
 
 

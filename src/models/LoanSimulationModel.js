@@ -116,6 +116,7 @@ export function generateLoanSimulation(terms) {
         slices.unshift(generateNextSlice(slices[0]));
     } while (slices[0].startLoanBalance > 0 && !shouldTerminateSimulation(slices))
 
+    slices.shift()
     return slices.reverse();
 }
 
@@ -138,6 +139,7 @@ export function updateLoanSimulation(terms, oldSlices, updatedSlice) {
         sliceIdx++;
     } while (slices[0].startLoanBalance > 0 && !shouldTerminateSimulation(slices))
 
+    slices.shift()
     return slices.reverse();
 }
 
