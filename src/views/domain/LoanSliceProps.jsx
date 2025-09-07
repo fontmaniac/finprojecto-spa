@@ -146,7 +146,7 @@ export function LoanSliceProps({ slice, onUpdate, onIndexChange, completeSlice }
             <div />
             <input
                 type="number"
-                step="0.01"
+                step="0.001"
                 value={staged.annualInterestRate}
                 onChange={handleFieldChange('annualInterestRate')}
                 readOnly={isReadOnly('annualInterestRate')}

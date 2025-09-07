@@ -108,3 +108,61 @@ This makes Vite listen on your local IP, not just `localhost`.
 ---
 
 Let me know if you want to wrap this into a deploy capsule or script it for repeatability. You’re one step away from turning your semantic calculator into a shared experience.
+
+---
+
+To build and run your Vite app in production mode, here’s the clean sequence:
+
+---
+
+### 🏗️ Step 1: Build the production bundle
+
+In your project root, run:
+
+```bash
+npm run build
+```
+
+This triggers `vite build`, which:
+
+- Optimizes and minifies your code
+- Strips out `console.log` and `debugger` (thanks to your `esbuild.drop` config)
+- Outputs static assets to the `dist/` folder
+
+---
+
+### 🚀 Step 2: Preview the production build locally
+
+To simulate how it’ll behave in production:
+
+```bash
+npm run preview
+```
+
+This spins up a local server that serves the `dist/` folder exactly as a static host would. Great for sanity checks before deploying.
+
+---
+
+### 🌐 Step 3: Deploy to production
+
+Since Vite outputs static files, you can deploy to any static host:
+
+- **Netlify / Vercel / GitHub Pages** — just point to the `dist/` folder
+- **Cloudflare Pages / S3 / Firebase Hosting** — same deal
+- **Your own server** — serve `dist/` via Nginx, Apache, or any static file server
+
+If you want to serve it manually:
+
+```bash
+npx serve dist
+```
+
+Or install globally:
+
+```bash
+npm install -g serve
+serve dist
+```
+
+---
+
