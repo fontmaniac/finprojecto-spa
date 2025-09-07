@@ -5,6 +5,7 @@ import { flushSync } from 'react-dom';
 import { useStagedModel } from '../../utils/useStagedModel';
 import styles from './LoanSliceProps.module.css'; // optional styling
 import { FrequencyDropDown as FrequencyDropDownImpl } from './FrequencyDropDown';
+import clsx from 'clsx';
 
 function Highlightable({ value, className }) {
     const [phase, setPhase] = useState(0);
@@ -31,10 +32,8 @@ function Highlightable({ value, className }) {
         return '';
     };
 
-    const combinedClassName = `${getClass(phase)} ${className || ''}`.trim();
-
     return (
-        <div className={combinedClassName}>
+        <div className={clsx(getClass(phase), className)}>
             {value}
         </div>
     );

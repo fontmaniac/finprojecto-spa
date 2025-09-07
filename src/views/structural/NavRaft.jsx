@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styles from './NavRaft.module.css';
+import clsx from 'clsx';
 
 /**
  * NavRaft items structure:
@@ -23,7 +24,7 @@ export function NavRaft({ items }) {
             {items.map((item, index) => (
                 <button
                     key={index}
-                    className={`${styles['nav-raft__icon']} ${item.isActive ? styles['nav-raft__icon--active'] : ''}`}
+                    className={clsx(styles['nav-raft__icon'], item.isActive && styles['nav-raft__icon--active'])} 
                     onClick={item.onClick}
                     title={item.label}
                 >

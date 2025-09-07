@@ -13,6 +13,7 @@
     "copytovm": "scp -r ./dist/ alexey@192.168.1.6:/home/alexey/"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
     "plotly.js": "^3.1.0",
     "plotly.js-dist-min": "^3.1.0",
     "react": "^19.1.1",
