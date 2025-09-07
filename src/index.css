@@ -13,7 +13,7 @@ body,
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
+  color-scheme: light dark motley;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
@@ -76,9 +76,56 @@ button {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+:root[data-theme='light'] {
+  --bg-color-0: #ffffff;
+  --bg-color-1: #ffffff;
+  --bg-color-2: #ffffff;
+  --bg-color-3: #ffffff;
+  --bg-color-4: #ffffff;
+  --text-color: #222222;
+}
+
+:root[data-theme='dark'] {
+  --bg-color-0: #1e1e1e;
+  --bg-color-1: #1e1e1e;
+  --bg-color-2: #1e1e1e;
+  --bg-color-3: #1e1e1e;
+  --bg-color-4: #1e1e1e;
+  --text-color: #eeeeee;
+}
+
+:root[data-theme='motley'] {
+  --bg-color-0: #ffffff;
+  --bg-color-1: yellowgreen;
+  --bg-color-2: lightsteelblue;
+  --bg-color-3: rgb(232, 152, 208);
+  --bg-color-4: rgb(85, 115, 214);
+  --text-color: #222222;
+}
+
+:root[data-theme='dark'] .rdg {
+  background-color: var(--bg-color-0);
+  color: var(--text-color);
+}
+
+:root[data-theme='dark'] .rdg-header-row {
+  background-color: var(--bg-color-0);
+  color: var(--text-color);
+}
+
+:root[data-theme='dark'] .rdg-row {
+  background-color: var(--bg-color-0);
+  color: var(--text-color);
+}
+
+:root[data-theme='dark'] .rdg-cell {
+  background-color: var(--bg-color-0);
+  color: var(--text-color);
+}
+
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    color: var(--text-color);
     background-color: #ffffff;
   }
   a:hover {
@@ -88,3 +135,4 @@ button {
     background-color: #f9f9f9;
   }
 }
+

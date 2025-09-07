@@ -19,7 +19,8 @@ import {
 } from './models/LoanSimulationModel.js';
 import { LoanSimulationOutcomeProps } from './views/domain/LoanSimulationOutcomeProps.jsx';
 import { LoanSliceProps } from './views/domain/LoanSliceProps.jsx';
-import { FiSun, FiMoon, FiBarChart2, FiTable, FiSave } from 'react-icons/fi';
+import { FiSun, FiMoon, FiBarChart2, FiTable, FiSave, FiGrid } from 'react-icons/fi';
+import { useTheme } from './ThemeProvider.jsx';
 
 function App() {
 
@@ -30,7 +31,7 @@ function App() {
   const [loanSlice, setLoanSlice] = useState(undefined);
 
   const [currentView, setCurrentView] = useState('chart');
-  const [currentTheme, setCurrentTheme] = useState('light');
+  const {theme, setTheme} = useTheme();
 
   console.log('Default loan terms ', loanTerms);
 
@@ -66,9 +67,9 @@ function App() {
     setRefreshKey(prev => prev + 1); // triggers re-render in MainView
   };
 
-  const setTheme = (theme) => {
+  const setCurrentTheme = (theme) => {
     console.log('Theme set ->', theme);
-    setCurrentTheme(theme);
+    setTheme(theme);
   };
 
   const setViewMode = (viewMode) => {
@@ -94,8 +95,9 @@ function App() {
     { icon: <FiSave />,       label: 'Save To CSV', isActive: false,                         onClick: () => downloadCsv() },
     { icon: <FiBarChart2 />,  label: 'Chart View',  isActive: currentView === 'chart',       onClick: () => setViewMode('chart') },
     { icon: <FiTable />,      label: 'Table View',  isActive: currentView === 'table',       onClick: () => setViewMode('table') },
-    { icon: <FiSun />,        label: 'Light Mode',  isActive: currentTheme === 'light',      onClick: () => setTheme('light') },
-    { icon: <FiMoon />,       label: 'Dark Mode',   isActive: currentTheme === 'dark',       onClick: () => setTheme('dark') },
+    { icon: <FiGrid />,       label: 'Motley Mode', isActive: theme === 'motley',     onClick: () => setCurrentTheme('motley') },
+    { icon: <FiSun />,        label: 'Light Mode',  isActive: theme === 'light',      onClick: () => setCurrentTheme('light') },
+    { icon: <FiMoon />,       label: 'Dark Mode',   isActive: theme === 'dark',       onClick: () => setCurrentTheme('dark') },
   ];
 
   const renderMainView = () => (

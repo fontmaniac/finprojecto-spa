@@ -7,7 +7,7 @@
     align-items: center;
     padding: 1rem;
     font-family: system-ui, sans-serif;
-    background: rgb(232, 152, 208);
+    background: var(--bg-color-3);
 }
 
 .loan-slice-grid label {
@@ -15,6 +15,7 @@
     font-weight: 500;
     padding-right: 0.5rem;
     white-space: nowrap;
+    color: var(--text-color);
 }
 
 .loan-slice-grid input[type="number"],

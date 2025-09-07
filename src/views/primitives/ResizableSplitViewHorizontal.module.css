@@ -8,7 +8,7 @@
 
 .sidebar {
     height: 100%;
-    background-color: #f5f5dc;
+    background-color: var(--bg-color-3);
     /* light yellow */
     overflow: auto;
 }
@@ -22,7 +22,7 @@
 .mainarea {
     flex: 1;
     height: 100%;
-    background-color: #2568e3;
+    background-color: var(--bg-color-4);
     /* light green */
     overflow: auto;
 }
