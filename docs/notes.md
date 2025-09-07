@@ -131,3 +131,126 @@ If you ever wanted to build a semantic feedback system that spans both worlds—
 
 Want to sketch that out sometime? Could be a fun architectural constellation.
 
+---
+
+Ah yes—this is a subtle but architecturally revealing distinction. You're absolutely right to feel echoes of the transition-on-change experiments. What’s happening here isn’t just about visibility—it’s about **React’s reconciliation boundary** and how JSX composition interacts with identity preservation.
+
+Let’s break it down:
+
+---
+
+### 🧩 The key difference: JSX vs component indirection
+
+Your working version uses:
+
+```jsx
+<div style={{ display: ... }}>
+  <LoanSimulationPlotlyRender ... />
+</div>
+```
+
+Whereas the broken version uses:
+
+```jsx
+<VisibilityWrapper isVisible={...}>
+  <LoanSimulationPlotlyRender ... />
+</VisibilityWrapper>
+```
+
+At first glance, both render a `<div>` with `display: none` or `block`. But semantically, they’re **not equivalent**.
+
+---
+
+### 🔬 What VisibilityWrapper introduces
+
+Even though `VisibilityWrapper` is just a thin wrapper around a `<div>`, it introduces a **new component boundary**. This has two consequences:
+
+#### 1. **Identity discontinuity**
+
+React tracks component identity by element type and position in the tree. When you wrap `LoanSimulationPlotlyRender` inside `VisibilityWrapper`, React sees:
+
+```jsx
+<VisibilityWrapper>
+  <LoanSimulationPlotlyRender />
+</VisibilityWrapper>
+```
+
+as a **new subtree**, and may treat it as a fresh render target—even if the internal JSX is unchanged. This breaks memoization and may trigger unintentional re-renders or even remounts depending on how props flow.
+
+#### 2. **Prop propagation and reconciliation**
+
+Even if `VisibilityWrapper` is stable, its `children` prop changes identity every time `loanSlice?.sliceIndex` changes. Unless `VisibilityWrapper` is memoized or its `children` are stable, React will re-render the subtree.
+
+---
+
+### 🧠 Why your direct `<div>` version works
+
+When you use a raw `<div>`, React doesn’t introduce a new component boundary. It simply toggles the `display` style, and the child component (`LoanSimulationPlotlyRender`) remains **structurally and referentially stable**. This preserves internal state (like zoom/pan) and avoids redraws.
+
+---
+
+### 🛠️ How to fix VisibilityWrapper (if you want to keep it)
+
+If you want to retain `VisibilityWrapper` for semantic clarity or future transitions, you can stabilize it like so:
+
+```jsx
+const VisibilityWrapper = React.memo(({ isVisible, children }) => (
+  <div style={{ display: isVisible ? 'block' : 'none', width: '100%', height: '100%' }}>
+    {children}
+  </div>
+));
+```
+
+And ensure `children` are referentially stable—e.g., wrap `LoanSimulationPlotlyRender` in `React.memo` or `useMemo`.
+
+---
+
+### 🌀 Echoes of transition-on-change
+
+This is the same architectural tension you hit when experimenting with phase-based transitions: **the moment you introduce a wrapper or indirection**, React’s reconciliation logic shifts. It’s not just about what’s rendered—it’s about **how identity is tracked** across updates.
+
+You’re not just debugging a visibility toggle—you’re debugging **semantic continuity**.
+
+Would you like to scaffold a `PhasePresence` capsule that formalizes this pattern? It could preserve identity across visibility toggles while allowing for future animation or transition logic.
+
+---
+
+```jsx
+import { toCsv } from './LoanSimulationModel';
+
+function downloadCsv(slices) {
+  const csv = toCsv(slices);
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'loan_simulation.csv';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+```
+
+---
+
+Yep, it’s a bit of a sleight of hand—but it’s the sanctioned kind. That pattern is the de facto standard for triggering downloads in the browser without server involvement. You're not alone in thinking it feels hacky; it’s essentially a workaround for the lack of a native “save file” API in most browsers.
+
+Here’s why it’s considered conventional:
+
+- 🧭 **Cross-browser compatibility**: Works reliably across Chrome, Firefox, Edge, Safari.
+- 🧼 **No permissions or prompts**: Doesn’t require user confirmation beyond the click.
+- 🧱 **No external dependencies**: Pure vanilla JS, no need for libraries or polyfills.
+- 🧠 **Intentional UX**: The user explicitly clicks a button, so it aligns with browser security expectations.
+
+---
+
+### 🧪 Alternatives (for curiosity’s sake)
+
+- **File System Access API**: Offers true “save as” dialogs and write access, but only supported in Chromium-based browsers and gated behind permissions.
+- **Data URI**: You can use `data:text/csv;base64,...` directly in the `href`, but it’s limited by size and encoding quirks.
+- **Server-side download**: You could POST the data to a backend and serve the file, but that’s overkill for local-only data.
+
+---
+
+So yes, it’s a bit of DOM theater—but it’s the good kind. If you ever want to wrap it in a `useDownload()` hook or abstract the link logic into a reusable utility, I can help scaffold that too.

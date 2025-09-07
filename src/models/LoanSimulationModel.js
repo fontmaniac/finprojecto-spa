@@ -174,3 +174,43 @@ export function extractLoanSimulationOutcome(slices, paymentFreqUnit) {
         paymentFreqUnit: paymentFreqUnit
     };
 }
+
+export const Columns = [
+    { key: 'sliceIndex', name: 'Slice Index' },
+    { key: 'startLoanBalance', name: 'Start Loan Balance' },
+    { key: 'startOffsetBalance', name: 'Start Offset Balance' },
+    { key: 'totalRepaymentsAtStart', name: 'Total Repayment (before)' },
+    { key: 'totalInterestAtStart', name: 'Total Interest (before)' },
+    { key: 'repayment', name: 'Repayment' },
+    { key: 'extraRepayment', name: 'Extra Repayment' },
+    { key: 'offsetTopUp', name: 'Offset Top-Up' },
+    { key: 'annualInterestRate', name: 'Annual Interest Rate' },
+    { key: 'periodInterestRate', name: 'Period Interest Rate' },
+    { key: 'interestCharged', name: 'Interest Charged' },
+    { key: 'endLoanBalance', name: 'End Loan Balance' },
+    { key: 'endOffsetBalance', name: 'End Offset Balance' },
+    { key: 'totalRepaymentsAtEnd', name: 'Total Repayment (after)' },
+    { key: 'totalInterestAtEnd', name: 'Total Interest (after)' },
+];
+
+export function toCsv(slices) {
+
+    const header = Columns.map(col => col.name).join(',');
+
+    const formatter = new Intl.NumberFormat('en-US', {
+        maximumFractionDigits: 2,
+        useGrouping: false
+    });
+
+    const format = (val) => {
+        if (val === null || val === undefined) return '';
+        if (typeof val === 'number') return formatter.format(val);
+        return String(val);
+    };
+
+    const rows = slices.map(slice =>
+        Columns.map(col => format(slice[col.key])).join(',')
+    );
+
+    return [header, ...rows].join('\n');
+}

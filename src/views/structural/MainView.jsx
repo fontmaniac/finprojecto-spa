@@ -17,7 +17,7 @@ export function MainView({ children, trigger }) {
         <div className={`${layout.fillContainer} ${styles.main}`}>
             {shouldRender
                 ? children
-                : <p>Press "init" to generate graph</p>}
+                : <p>Press "Calculate" to generate graph</p>}
         </div>
     );
 }
