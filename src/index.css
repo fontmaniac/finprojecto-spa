@@ -83,6 +83,10 @@ button {
   --bg-color-3: #ffffff;
   --bg-color-4: #ffffff;
   --text-color: #222222;
+  --modified-row: #eeee1f;
+  --selected-row: #777777;
+  --modified-row-text: #222222;
+  --selected-row-text: #222222;
 }
 
 :root[data-theme='dark'] {
@@ -92,6 +96,10 @@ button {
   --bg-color-3: #1e1e1e;
   --bg-color-4: #1e1e1e;
   --text-color: #eeeeee;
+  --modified-row: #eeee1f;
+  --selected-row: #777777;
+  --modified-row-text: #222222;
+  --selected-row-text: #222222;
 }
 
 :root[data-theme='motley'] {
@@ -101,6 +109,10 @@ button {
   --bg-color-3: rgb(232, 152, 208);
   --bg-color-4: rgb(85, 115, 214);
   --text-color: #222222;
+  --modified-row: #eeee1f;
+  --selected-row: #777777;
+  --modified-row-text: #222222;
+  --selected-row-text: #222222;
 }
 
 :root[data-theme='dark'] .rdg {
@@ -118,10 +130,10 @@ button {
   color: var(--text-color);
 }
 
-:root[data-theme='dark'] .rdg-cell {
+/* :root[data-theme='dark'] .rdg-cell {
   background-color: var(--bg-color-0);
   color: var(--text-color);
-}
+} */
 
 @media (prefers-color-scheme: light) {
   :root {

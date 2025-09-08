@@ -1,7 +1,9 @@
 .modified-row {
-    background-color: #fffbe6;    /* soft yellow */
+    background-color: var(--modified-row) !important;
+    color: var(--modified-row-text) !important;
 }
 
 .selected-row {
-    background-color: #777777;
+    background-color: var(--selected-row) !important;
+    color: var(--selected-row-text) !important;
 }

@@ -177,3 +177,84 @@ It’ll show the active theme in the corner—great for debugging.
 ---
 
 Let me know if you want to scaffold a `ThemeTokens.md` to document your semantic variables, or build a `useVisualPhase()` hook that syncs theme transitions with UI feedback.
+
+---
+
+Ah, the classic specificity tango. You're bumping into a CSS specificity clash where the dark theme’s `.rdg-row` declaration is overriding your custom row styles. Here's how to make your `modified-row` and `selected-row` classes consistently win across all themes—including the dark one.
+
+---
+
+### 🛠️ Solution: Increase Specificity or Use `!important`
+
+You have two main paths:
+
+#### **Option 1: Increase Selector Specificity**
+
+Make your custom styles more specific than `.rdg-row`. For example:
+
+```css
+:root[data-theme='dark'] .rdg-row.modified-row {
+  background-color: #yourModifiedColor;
+  color: #yourModifiedTextColor;
+}
+
+:root[data-theme='dark'] .rdg-row.selected-row {
+  background-color: #yourSelectedColor;
+  color: #yourSelectedTextColor;
+}
+```
+
+This way, your styles target `.rdg-row` *with* your custom class, which has higher specificity than the base `.rdg-row`.
+
+#### **Option 2: Use `!important` (sparingly)**
+
+If you want a quick override without restructuring selectors:
+
+```css
+.modified-row {
+  background-color: #yourModifiedColor !important;
+  color: #yourModifiedTextColor !important;
+}
+
+.selected-row {
+  background-color: #yourSelectedColor !important;
+  color: #yourSelectedTextColor !important;
+}
+```
+
+This brute-forces precedence, but use it judiciously—it can make future overrides harder to manage.
+
+---
+
+### 🧠 Bonus: Theme-Aware Class Composition
+
+If you're already using CSS modules or a theme switcher, you could dynamically compose classes based on theme context:
+
+```js
+const getRowStyle = (row) => {
+  const base = row.isModified ? 'modified-row' :
+               row.sliceIndex === selectedSliceIdx ? 'selected-row' : '';
+  return `${styles[base]} ${styles['rdg-row']}`;
+};
+```
+
+But this only helps if your CSS module includes `.rdg-row` as a local class, which it likely doesn’t—so specificity remains your best bet.
+
+---
+
+### ✨ Vibe-preserving Tip
+
+Since your themes are modular and vibe-coded, you might consider scoping theme overrides to only apply when no custom class is present:
+
+```css
+:root[data-theme='dark'] .rdg-row:not(.modified-row):not(.selected-row) {
+  background-color: var(--bg-color-0);
+  color: var(--text-color);
+}
+```
+
+This preserves the dark theme’s defaults *only* for unstyled rows, letting your semantic feedback shine through untouched.
+
+---
+
+Let me know if you want to refactor this into a `useRowClass()` hook or encapsulate it for future compositional clarity.
