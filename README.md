@@ -14,27 +14,29 @@ If you end up using it in a commercial product or service, I’d appreciate a qu
 
 ```plaintext
 src/
-├── models/
+├── models/                                 # Domain models and simulation logic
 │   ├── Definitions.js                      # Common definitions
 │   ├── LoanSimulationModel.js              # Lifetime simulation structures
 │   ├── LoanTermsModel.js                   # Loan terms data model
-│   └── ParabolaModel.js                    # Domain model for y = ax² + bx + c
+│   └── ParabolaModel.js                    # Parabola computation model (y = ax² + bx + c)
 │
-├── utils/
-│   ├── useImperativeModel.jsx              # Hook for imperative renderers inside React
-│   └── useStagedModel.js                   # Hook for staged editing of model props
+├── utils/                                  # Declarative bridges and editing hooks
+│   ├── useImperativeModel.jsx              # Hosts imperative renderers inside React
+│   └── useStagedModel.js                   # Staged editing of model props
 │
 ├── views/
-│   ├── primitives/                         # Layout primitives and scaffolds
-│   │   ├── Layout.jsx                      # Semantic layout wrapper with namespaced slots
+│   ├── primitives/                         # Layout scaffolds and semantic wrappers
+│   │   ├── Layout.jsx                      # Central layout authority with namespaced slots
 │   │   └── ResizableSplitViewHorizontal.jsx# Draggable horizontal split view
 │
 │   ├── structural/                         # Domain-agnostic structural components
+│   │   ├── BlurbDisplay.jsx                # Wrapper for index.html blurb content
 │   │   ├── NavBar.jsx                      # Container for navigation panes
 │   │   ├── NavRaft.jsx                     # Floating nav raft with icons and active state
 │   │   └── MainView.jsx                    # Hosts domain render component
 │
-│   ├── domain/                             # Domain-specific components
+│   ├── domain/                             # Domain-specific UI and renderers
+│   │   ├── HelpDisplay.jsx                 # Static help capsule for first-time visitors
 │   │   ├── LoanTermsProps.jsx              # Input UI for loan terms sheet
 │   │   ├── LoanSliceProps.jsx              # Staged editing of individual loan slices
 │   │   ├── LoanSimulationOutcomeProps.jsx  # Display of computed loan outcome
@@ -58,6 +60,8 @@ root/
 ├── eslint.config.js                        # ESLint configuration
 ├── for-ai.md                               # Context scaffold for LLM assistants
 ├── index.html                              # HTML entry point
+├── LICENSE.txt                             # Modified MIT license with commercial-use notification clause
+├── NOTICES.txt                             # Commercial usage log (via pull request)
 ├── package.json                            # Project manifest
 ├── package-lock.json                       # Dependency lockfile
 ├── README.md                               # Project overview and dev philosophy
