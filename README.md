@@ -6,7 +6,7 @@ A minimal, experimental React single-page application (SPA) designed as a utilit
 
 This project is public and intentionally permissive. You are welcome to use, remix, and build upon it freely.
 
-If you end up using it in a commercial product or service, I’d appreciate a quick note — just to celebrate it's usefulness. Attribution is required, and notification is requested via the contact listed in the LICENSE.txt file.
+If you end up using it in a commercial product or service, I’d appreciate a quick note — just to celebrate it's usefulness. Attribution is required, and notification is requested via the method specified in the LICENSE.txt file.
 
 [![License: MIT+Notice](https://img.shields.io/badge/license-MIT%2BNotice-blue.svg)](LICENSE.txt)
 
