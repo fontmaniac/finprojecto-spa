@@ -1,0 +1,9 @@
+/* FM: Styling for declarative blurb capsule */
+
+.blurb {
+  border: 1px solid var(--text-color);    /* Thin, soft border */
+  border-radius: 6px;                     /* Slightly rounded corners */
+  padding: 1rem;                          /* Comfortable inner spacing */
+  font-size: 0.95rem;                     /* Slightly reduced font size for tone */
+  line-height: 1.6;
+}

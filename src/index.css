@@ -135,6 +135,30 @@ button {
   color: var(--text-color);
 } */
 
+#preact-blurb {
+  font-family: sans-serif;
+  padding: 1rem;
+  color: #444;
+}
+
+.fallbackColumn {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%; /* Inherit from MainView */
+  overflow: hidden; /* Prevent outer scrollbars */
+}
+
+.fallbackColumn > :first-child {
+  flex: 0 0 auto; /* Take only needed space */
+}
+
+.fallbackColumn > :last-child {
+  flex: 1 1 auto;   /* Stretch to fill remaining space */
+  overflow-y: auto; /* Scroll internally if needed */
+}
+
+
 @media (prefers-color-scheme: light) {
   :root {
     color: var(--text-color);

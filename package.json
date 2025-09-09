@@ -9,8 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "clean": "powershell -NoProfile -Command \"Remove-Item -Recurse -Force node_modules,.vite,dist -ErrorAction SilentlyContinue; npm install\"",
-    "aictx": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scrape-fm.ps1",
-    "copytovm": "scp -r ./dist/ alexey@192.168.1.6:/home/alexey/"
+    "aictx": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scrape-fm.ps1"
   },
   "dependencies": {
     "clsx": "^2.1.1",

@@ -1,0 +1,8 @@
+# Commercial Usage Notifications
+
+Please add a line below to notify the author of any commercial use of this project.  
+Include the date, usage context, attribution method, and your GitHub moniker or other contact address.
+
+Sample Record:
+[2025-11-03] Used in "LoanSim Pro" — a commercial mortgage simulation tool by Acme Finance Ltd. Attribution included in About section.  
+Submitted by: github.com/acme-dev

@@ -21,6 +21,8 @@ import { LoanSimulationOutcomeProps } from './views/domain/LoanSimulationOutcome
 import { LoanSliceProps } from './views/domain/LoanSliceProps.jsx';
 import { FiSun, FiMoon, FiBarChart2, FiTable, FiSave, FiGrid } from 'react-icons/fi';
 import { useTheme } from './ThemeProvider.jsx';
+import { BlurbDisplay } from './views/structural/BlurbDisplay.jsx';
+import { HelpDisplay } from './views/domain/HelpDisplay.jsx';
 
 function App() {
 
@@ -140,8 +142,14 @@ function App() {
         </NavBar>
       </Layout.Sidebar>
       <Layout.MainArea>
-        <MainView trigger={refreshKey} >
-          {renderMainView()}
+        <MainView 
+          trigger={refreshKey} 
+          fallback={
+            <div className='fallbackColumn'>
+              <BlurbDisplay />
+              <HelpDisplay />
+            </div>} >
+          {renderMainView()} 
         </MainView>
         <NavRaft items={navItems} />        
       </Layout.MainArea>

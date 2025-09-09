@@ -1,11 +1,11 @@
 /* MainView.module.css */
 .main {
+    height: 100%;
     display: flex;
     flex-direction: column;
     flex: 1;
     background: var(--bg-color-4);
     padding: 1rem;
     box-sizing: border-box;
-    overflow: auto;
-    /* allows scroll if content grows */
+    overflow: auto;    /* allows scroll if content grows */
 }

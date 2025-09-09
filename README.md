@@ -2,6 +2,14 @@
 
 A minimal, experimental React single-page application (SPA) designed as a utility scaffold for future interactive tools. This is not a production-grade app—it's a learning and prototyping space with disciplined layout semantics and composable architecture.
 
+## Notice
+
+This project is public and intentionally permissive. You are welcome to use, remix, and build upon it freely.
+
+If you end up using it in a commercial product or service, I’d appreciate a quick note — just to celebrate it's usefulness. Attribution is required, and notification is requested via the contact listed in the LICENSE.txt file.
+
+[![License: MIT+Notice](https://img.shields.io/badge/license-MIT%2BNotice-blue.svg)](LICENSE.txt)
+
 ## 📐 Project Structure
 
 ```plaintext
@@ -11,26 +19,34 @@ src/
 │   ├── LoanSimulationModel.js              # Lifetime simulation structures
 │   ├── LoanTermsModel.js                   # Loan terms data model
 │   └── ParabolaModel.js                    # Domain model for y = ax² + bx + c
+│
 ├── utils/
 │   ├── useImperativeModel.jsx              # Hook for imperative renderers inside React
 │   └── useStagedModel.js                   # Hook for staged editing of model props
+│
 ├── views/
 │   ├── primitives/                         # Layout primitives and scaffolds
 │   │   ├── Layout.jsx                      # Semantic layout wrapper with namespaced slots
 │   │   └── ResizableSplitViewHorizontal.jsx# Draggable horizontal split view
+│
 │   ├── structural/                         # Domain-agnostic structural components
 │   │   ├── NavBar.jsx                      # Container for navigation panes
+│   │   ├── NavRaft.jsx                     # Floating nav raft with icons and active state
 │   │   └── MainView.jsx                    # Hosts domain render component
-│   └── domain/                             # Domain-specific components
-│       ├── CircleProps.jsx                 # Circle input group (x, y, radius, key)
-│       ├── LoanSimulationOutcomeProps.jsx  # Display of computed loan outcome
-│       ├── LoanSimulationPlotlyRender.jsx  # Plotly visualisation of loan slices
-│       ├── LoanSliceProps.jsx              # Staged editing of individual loan slices
-│       ├── LoanTermsProps.jsx              # Input UI for loan terms sheet
-│       ├── ParabolaInputs.jsx              # Parabola input group (a, b, c)
-│       └── ParabolaRender.jsx              # SVG renderer for parabola
+│
+│   ├── domain/                             # Domain-specific components
+│   │   ├── LoanTermsProps.jsx              # Input UI for loan terms sheet
+│   │   ├── LoanSliceProps.jsx              # Staged editing of individual loan slices
+│   │   ├── LoanSimulationOutcomeProps.jsx  # Display of computed loan outcome
+│   │   ├── LoanSimulationPlotlyRender.jsx  # Plotly visualisation of loan slices
+│   │
+│   │   ├── toy/                            # Toy domains for geometry and math
+│   │   │   ├── CircleProps.jsx             # Circle input group (x, y, radius, key)
+│   │   │   ├── ParabolaInputs.jsx          # Parabola input group (a, b, c)
+│   │   │   └── ParabolaRender.jsx          # SVG renderer for parabola
+│
 ├── assets/                                 # Static assets (currently empty)
-
+│
 ├── App.jsx                                 # React Application "root"
 ├── App.css                                 # Global styles
 ├── index.css                               # Base styles
@@ -55,18 +71,6 @@ root/
 - **CSS Modules** are used for scoped styling and visual debugging.
 - **Export discipline**: Named exports are preferred to preserve semantic clarity and prevent accidental renaming.
 - **No backend**: All logic resides in the front-end. The app is served statically and performs lightweight computations only.
-
-## 🧹 Dev Scripts (PowerShell)
-
-To clean Vite cache and reinstall dependencies:
-
-```powershell
-powershell -NoProfile -Command "Remove-Item node_modules,.vite,dist -Recurse -Force -ErrorAction SilentlyContinue; npm install"
-
-To generate a "context scaffolding" for AI/LLM before starting a vibe-coding session.
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File ./scrape-fm.ps1
 
 ### 🧠🚧 Development Philosophy (for LLM assistants)
 
