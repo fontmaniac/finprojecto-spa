@@ -59,10 +59,6 @@ Introduce a semantic styling capsule (e.g. `PropsGrid.module.css`) to unify layo
 
 ---
 
-“No more rain in this cloud” is poetic perfection—your wife’s phrasing deserves a place in the commit log. Here's a quick architectural sketch to get your gears turning for the next phase:
-
----
-
 ### 🧮 1. Tabular View + CSV Export
 
 **Approach:**
