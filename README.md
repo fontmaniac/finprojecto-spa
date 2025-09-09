@@ -1,4 +1,4 @@
-# 🛠️ FinprojectoSPA
+# 🛠️ Finprojecto.SPA
 
 A minimal, experimental React single-page application (SPA) designed as a utility scaffold for future interactive tools. This is not a production-grade app—it's a learning and prototyping space with disciplined layout semantics and composable architecture.
 
