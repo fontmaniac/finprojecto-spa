@@ -5,7 +5,7 @@ Here’s what I’d capture in `last-vibe-session.md` to preserve the architectu
 ### `last-vibe-session.md`
 
 **Session Date:** 2025-09-03  
-**Author:** Alexey  
+**Author:** Fontmaniac  
 **Context Capsule:** FinprojectoSPA – LoanSimulationPlotlyRender.jsx  
 **Session Mood:** Reflective, focused, mildly fatigued but architecturally satisfied
 
